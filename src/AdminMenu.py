@@ -2,7 +2,7 @@ import tkinter as tk
 
 root = tk.Tk()
 
-frame = tk.Frame (root, padx=20, pady=20)
+frame = tk.Frame (root, padx=20, pady=20, bg="lightblue")
 frame.grid(row=0, column=0, sticky='news')
 
 intro = tk.Label (frame, text="Admin Menu", wraplength=800)
@@ -15,8 +15,8 @@ viewapp.grid(row=1, column=0)
 editapp.grid(row=2, column=0)
 addreports.grid(row=3, column=0)
 
-root.rowconfigure (0, weight=1, minsize=600)
-root.columnconfigure (0, weight=1, minsize=800)
+root.rowconfigure (0, weight=1, minsize=200)
+root.columnconfigure (0, weight=1, minsize=300)
 
 frame.rowconfigure (0, weight=1)
 frame.rowconfigure (1, weight=1)
