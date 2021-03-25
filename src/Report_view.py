@@ -17,7 +17,7 @@ v1 = pdf.ShowPdf()
   
 # Adding pdf location and width and height.
 v2 = v1.pdf_view(root,
-                 pdf_location = r"location", 
+                 pdf_location = r"C:\Users\Vani\Downloads\10_AOAC_2USU112_Mobile_App_Development.doc", 
                  width = 50, height = 100, bar="true")
   
 # Placing Pdf in my gui.
