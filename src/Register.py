@@ -1,10 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
+# have to add DOB, gender, password confirmation and address
 
 root = tk.Tk()
 # root = tk.Toplevel(root, )
 
-frame = tk.LabelFrame(root, text='New Patient Registration', padx=10, pady=10)
+frame = tk.LabelFrame(root, text='New Patient Registration', padx=10, pady=10, bg="lightblue")
 frame.grid(row=0, column=0, sticky='news')
 
 fnameLabel = tk.Label(frame, text='First Name: ')
@@ -35,8 +36,8 @@ emailLabel.grid(row=5, column=0)
 emailBox.grid(row=5, column=1)
 submit.grid(row=6, column=0, columnspan=2)
 
-root.rowconfigure (0, weight=1, minsize=1000)
-root.columnconfigure (0, weight=1, minsize=1200)
+root.rowconfigure (0, weight=1, minsize=500)
+root.columnconfigure (0, weight=1, minsize=700)
 frame.rowconfigure (0, weight=1)
 frame.rowconfigure (1, weight=1)
 frame.rowconfigure (2, weight=1)

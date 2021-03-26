@@ -3,7 +3,7 @@ import tkinter as tk
 def login ():
     root = tk.Tk()
 
-    frame = tk.Frame (root, padx=20, pady=20)
+    frame = tk.Frame (root, padx=20, pady=20, bg="lightblue")
     frame.grid (row=0, column=0, sticky='news')
 
     intro = tk.Label (frame, text="Welcome to Appointment Booking and Reports Management System", wraplength=800)
@@ -22,8 +22,8 @@ def login ():
     login.grid (row=3, column=0)
     register.grid (row=3, column=1)
 
-    root.columnconfigure (0, weight=1, minsize=900)
-    root.rowconfigure (0, weight=1, minsize=800)
+    root.columnconfigure (0, weight=1, minsize=500)
+    root.rowconfigure (0, weight=1, minsize=300)
 
     frame.columnconfigure (0, weight=1)
     frame.columnconfigure (1, weight=1)
