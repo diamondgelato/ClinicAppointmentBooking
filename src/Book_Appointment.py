@@ -4,6 +4,9 @@ from tkinter import ttk
 
 
 #Remove PatientID and Phone Number
+#Name of the doctor- dropdown menu
+#Add a frame for the timings
+#Free and delete timings- NOT scheduled for the db.connectivity
 
 def getAppointment ():
     timeframe = tk.Frame(root, padx=10, pady=10, bg="lightblue")

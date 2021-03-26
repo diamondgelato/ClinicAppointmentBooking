@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-# have to add DOB,gender and address
+# have to add DOB, gender, password confirmation and address
 
 root = tk.Tk()
 # root = tk.Toplevel(root, )
