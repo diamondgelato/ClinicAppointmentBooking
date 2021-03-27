@@ -18,7 +18,7 @@ def view():
     view1.heading(5, text='Status')
 
     root1.title('Appointment Data')
-    root1.geometry('650x500')
+    root1.geometry('1300x1000')
 
     root1.mainloop()
 
@@ -45,5 +45,5 @@ def delete():
 
     root.mainloop()
 
-# view()
+view()
 # delete()
