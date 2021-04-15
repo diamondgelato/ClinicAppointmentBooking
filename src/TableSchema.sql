@@ -6,7 +6,7 @@ CREATE TABLE patient (
     password TEXT NOT NULL,
     phone_no TEXT,
     email TEXT,
-    birth_date DATE,
+    birth_date TEXT NOT NULL, -- ISO8601 string
     gender TEXT NOT NULL,
     address TEXT
 );
@@ -14,16 +14,16 @@ CREATE TABLE patient (
 -- sort out the time ka thingy haaaaa
 CREATE TABLE appointment (
     app_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date DATE,
+    datetime TEXT NOT NULL, -- ISO8601 string
     purpose TEXT NOT NULL,
     status TEXT NOT NULL
 );
 
 CREATE TABLE report (
     report_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date DATE,
+    date TEXT NOT NULL,  -- ISO8601 string
     name TEXT NOT NULL,
-    -- file BLOB,
+    file BLOB NOT NULL
 );
 
 CREATE TABLE doctor (
@@ -45,14 +45,16 @@ CREATE TABLE patient_report (
     report_id INTEGER NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patient(patient_id),
     FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id),
-    FOREIGN KEY (report_id) REFERENCES report(report_id)
+    FOREIGN KEY (report_id) REFERENCES report(report_id),
+    PRIMARY KEY (patient_id, doctor_id, report_id)
 );
 
 CREATE TABLE scheduled_app (
-patient_id INTEGER NOT NULL,
+    patient_id INTEGER NOT NULL,
     doctor_id INTEGER NOT NULL,
     app_id INTEGER NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patient(patient_id),
     FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id),
-    FOREIGN KEY (app_id) REFERENCES appointment(app_id)
+    FOREIGN KEY (app_id) REFERENCES appointment(app_id),
+    PRIMARY KEY (patient_id, doctor_id, app_id)
 );
