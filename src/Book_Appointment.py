@@ -1,15 +1,14 @@
 import calendar
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 #from tkinter import*
 
-
-#Remove PatientID and Phone Number
-#Name of the doctor- dropdown menu
-#Add a frame for the timings
 #Free and delete timings- NOT scheduled for the db.connectivity
+
+#Need to figure out the message dialog box+ getting the date printed in the dialog box
+
 def invoke():
-    indicatoron=0
     selection="You selected the Time "+str(var.get())
     label.config(text=selection)
 
@@ -18,19 +17,42 @@ def invoke():
 def getAppointment ():
     timeframe = tk.LabelFrame(root, padx=10, pady=10, text="Timings available for the date")
     timeframe.grid (row=2, column=0, sticky='news')
-    var=tk.StringVar()
-    var="free"
-    
-    times=[("10.30am", "free"), ("11.00am", "deleted"),("11.30am", "deleted"),("12.00pm","free"),("12.30pm", "free") ]
-    i=0
-    for time, val in times:
-        r=tk.Radiobutton(timeframe, text=time, variable=var, width=20, padx=20, indicatoron=1, value="scheduled", command= invoke)
-        r.grid(row=i, column=0)
-        i+=1
-        
-       
-       
+    #date=str(value1)
+    var=tk.IntVar()
 
+    times=[("10.30am", 0, "free"), ("11.00am", 1, "scheduled"),("11.30am",2, "deleted"),("12.00pm",3,"free"),("12.30pm",4, "free") ]
+    i=0
+    for time, val, state in times:
+
+        if(state=="scheduled"):
+            r=r=tk.Radiobutton(timeframe, text=time, variable=var, width=20, padx=20, value=val, command=lambda: print(var.get()), state= "disabled" )
+            r.grid(row=i, column=0)
+        else: 
+            r=tk.Radiobutton(timeframe, text=time, variable=var, width=20, padx=20, value=val, command=lambda: print(var.get()), state= "normal")
+            r.grid(row=i, column=0)
+            times[var.get()]=(time, val, "scheduled")
+        
+        i+=1
+    timeframe.rowconfigure(7, weight=1)
+    timeframe.columnconfigure(0, weight=1)
+    timeframe.columnconfigure(1, weight=1)
+    timeframe.columnconfigure(2, weight=1)
+    timeframe.columnconfigure(3, weight=1)
+    timeframe.columnconfigure(4, weight=1)
+    timeframe.columnconfigure(5, weight=1)
+    timeframe.columnconfigure(6, weight=1)
+
+    submit = tk.Button(timeframe, text='Submit')#, onClick=sub(date,time)
+    submit.grid(row=7, column=0)
+    #need to work on the message dialog box
+
+# def sub(value1, value):
+#     var= "Date: "+value1 +"\nTime: "+value+"\nDoctor: "
+#     msg=tk.messagebox.askquestion("Are you sure?", var );
+#     # if(msg=="yes"):
+#     #     sub()
+        
+#connect to database
 # Getting calendar related data
 # monday = 0
 firstday = calendar.weekday(2021, 4, 1)
@@ -52,7 +74,6 @@ frame.grid(row=0, column=0, sticky='news')
 
 frame2=tk.Frame (root, padx=10, pady=10, bg="white")
 frame2.grid(row=1, column=0, sticky='news')
-
 doctors = [
     "Monday",
     "Tuesday",
@@ -101,8 +122,7 @@ for day in monthiter:
     dayButton.grid (row=r, column=c)
     c+=1
 
-submit = tk.Button(frame2, text='Submit')
-submit.grid(row=13, column=0, columnspan=7)
+
 
 root.rowconfigure (0, weight=1, minsize=300)
 root.columnconfigure (0, weight=1, minsize=500)
