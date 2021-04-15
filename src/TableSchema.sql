@@ -58,3 +58,9 @@ CREATE TABLE scheduled_app (
     FOREIGN KEY (app_id) REFERENCES appointment(app_id),
     PRIMARY KEY (patient_id, doctor_id, app_id)
 );
+
+INSERT INTO admin (username, password)
+VALUES ('admin', 'admin');
+
+INSERT INTO patient (first_name, last_name, username, password, phone_no, emaiL, birth_date, gender, address)
+VALUES ('Mugdha', 'Kurkure', 'mugs1234', 'mugs1234', '9008210569', 'mugdha.k@gmail.com', '2001-09-18', 'FEMALE', 'Thane');
