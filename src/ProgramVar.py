@@ -1,0 +1,1 @@
+databasePath = r'C:\Users\ashuk\Documents\Semester 4\Mini Project\ClinicAppointmentBooking\data.db'

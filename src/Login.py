@@ -1,8 +1,10 @@
 import tkinter as tk
 import sqlite3 as sql
+
 import Register
 import PatientMenu
 import AdminMenu
+import ProgramVar as pv
 
 def loginScreen ():
 
@@ -17,7 +19,7 @@ def loginScreen ():
         passCol = 4
 
         # IMPORTANT: CHANGE THE PATH TO THE ABSOLUTE PATH OF THE DATABASE ON YOUR PC OR THIS WILL NOT WORK FOR YOU
-        conn = sql.connect(r'C:\Users\ashuk\Documents\Semester 4\Mini Project\ClinicAppointmentBooking\data.db')
+        conn = sql.connect(pv.databasePath)
         cur = conn.cursor()
 
         # IF CHANGING THE PATH DOESNT WORK UNCOMMENT THE CODE BELOW

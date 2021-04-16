@@ -3,6 +3,8 @@ import sqlite3 as sql
 import tkinter as tk
 from tkinter import ttk
 import tkcalendar as tkc
+
+import ProgramVar as pv
 # have to add DOB, gender, password confirmation and address
 
 def registerScreen (root):
@@ -11,7 +13,7 @@ def registerScreen (root):
     genderVar = tk.StringVar()
 
     def submitCallback ():
-        conn = sql.connect(r'C:\Users\ashuk\Documents\Semester 4\Mini Project\ClinicAppointmentBooking\data.db')
+        conn = sql.connect(pv.databasePath)
         cur = conn.cursor()
 
         # IMPORTANT: The date is being stored in the databse in 
