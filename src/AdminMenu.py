@@ -1,8 +1,9 @@
 import tkinter as tk
 import Report_Upload
 
-def adminMenuScreen (root):
+def adminMenuScreen (root, id):
     # root = tk.Tk()
+    print (id)
     newWind = tk.Toplevel (root, )
 
     frame = tk.Frame (newWind, padx=20, pady=20, bg="lightblue")

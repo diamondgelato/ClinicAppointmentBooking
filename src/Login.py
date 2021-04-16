@@ -46,17 +46,21 @@ def loginScreen ():
         if (result[0][passCol] == password):
             if (isAdmin == 1):
                 print ('Openign admin menu')
-                AdminMenu.adminMenuScreen (root)
+                AdminMenu.adminMenuScreen (root, result[0][0])
             if (isAdmin == 0):
                 print ('Openign patient menu')
-                PatientMenu.patientMenuScreen (root)
+                PatientMenu.patientMenuScreen (root, result[0][0])
         else:
             print (password, result[0][passCol], '\npassword did not match')
 
         conn.commit()
         conn.close()
 
+    def enterCallback (event):
+        loginValidate()
+
     root = tk.Tk()
+    root.bind ('<Return>', enterCallback)
 
     frame = tk.Frame (root, padx=20, pady=20, bg="lightblue")
     frame.grid (row=0, column=0, sticky='news')
