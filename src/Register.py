@@ -5,6 +5,7 @@ from tkinter import ttk
 import tkcalendar as tkc
 
 import ProgramVar as pv
+import PatientMenu
 # have to add DOB, gender, password confirmation and address
 
 def registerScreen (root):
@@ -16,7 +17,7 @@ def registerScreen (root):
         conn = sql.connect(pv.databasePath)
         cur = conn.cursor()
 
-        # IMPORTANT: The date is being stored in the databse in 
+        # IMPORTANT: The date is being stored in the databse in YYYY-MM-DD format (I don't know how to change it)
 
         fname = fnameBox.get()
         lname = lnameBox.get()
@@ -29,7 +30,7 @@ def registerScreen (root):
         address = addrBox.get()
         dob = dobselect.get_date()
 
-        # check if any is empty (except phone, email, address)
+        # check if any field is empty or date has not been changed (except phone, email, address)
         if (not fname) or (not lname) or (not uname) or (not password) or (not gender) or (date.today() == dob):
             print ("Something is empty :(")
         else:
@@ -53,39 +54,62 @@ def registerScreen (root):
         conn.commit ()
         conn.close ()
 
+        # Open Patient Menu and close Register screen
+        newWind.withdraw()
+        PatientMenu.patientMenuScreen(root, result[0][0])
+
     def enterCallback(event):
         submitCallback()
 
+
+
+    root.deiconify()
     newWind = tk.Toplevel(root, )
     newWind.bind('<Return>', enterCallback)
+
+
 
     frame = tk.LabelFrame(newWind, text='New Patient Registration', padx=10, pady=10, bg="lightblue")
     frame.grid(row=0, column=0, sticky='news')
     radioFrame = tk.Frame (frame, padx=100, pady=10, bg="lightblue")
 
+
+
     fnameLabel = tk.Label(frame, text='First Name: ')
     fnameBox = ttk.Entry(frame, width=30)
+
     lnameLabel = tk.Label(frame, text='Last Name: ')
     lnameBox = ttk.Entry(frame, width=30)
+    
     unameLabel = tk.Label(frame, text='Username: ')
     unameBox = tk.Entry(frame, width=30)
+    
     passLabel = tk.Label(frame, text='Password: ')
     passBox = ttk.Entry(frame, width=30)
+    
     confLabel = tk.Label(frame, text='Confirm Password: ')
     confBox = ttk.Entry(frame, width=30)
+    
     phoneLabel = tk.Label(frame, text='Phone Number: ')
     phoneBox = ttk.Entry(frame, width=30)
+    
     emailLabel = tk.Label(frame, text='E-mail: ')
     emailBox = ttk.Entry(frame, width=30)
+    
     addrLabel = tk.Label(frame, text='Address: ')
     addrBox = ttk.Entry(frame, width=30)
+    
     dobLabel = tk.Label(frame, text='Select Date Of Birth: ')
     dobselect = tkc.DateEntry (frame)
+    
     genderLabel = tk.Label(frame, text='Gender: ')
     maleRadio = ttk.Radiobutton (radioFrame, text='Male', variable=genderVar, value='MALE')
     femaleRadio = ttk.Radiobutton (radioFrame, text='Female', variable=genderVar, value='FEMALE')
     otherRadio = ttk.Radiobutton (radioFrame, text='Other', variable=genderVar, value='OTHER')
+    
     submit = tk.Button(frame, text='Submit', command=submitCallback)
+
+
 
     fnameLabel.grid(row=0, column=0)
     fnameBox.grid(row=0, column=1)
@@ -112,6 +136,8 @@ def registerScreen (root):
     maleRadio.grid(row=0, column=0, sticky='w')
     femaleRadio.grid(row=1, column=0, sticky='w')
     otherRadio.grid(row=2, column=0, sticky='w')
+
+
 
     newWind.rowconfigure (0, weight=1, minsize=1600)
     newWind.columnconfigure (0, weight=1, minsize=1200)

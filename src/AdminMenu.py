@@ -4,6 +4,11 @@ import Report_Upload
 def adminMenuScreen (root, id):
     # root = tk.Tk()
     print (id)
+
+    def logout ():
+        root.deiconify()
+        newWind.withdraw()
+
     newWind = tk.Toplevel (root, )
 
     frame = tk.Frame (newWind, padx=20, pady=20, bg="lightblue")
@@ -13,11 +18,13 @@ def adminMenuScreen (root, id):
     viewapp = tk.Button (frame, text="View and Edit Appointments")
     # editapp = tk.Button (frame, text="Edit Appointments")
     addreports = tk.Button (frame, text="Add and View Reports", command = lambda: Report_Upload.reportUploadScreen(root))
+    logout = tk.Button (frame, text="Log Out", command=logout)
 
     intro.grid(row=0, column=0)
     viewapp.grid(row=1, column=0)
     # editapp.grid(row=2, column=0)
     addreports.grid(row=2, column=0)
+    logout.grid(row=3, column=0)
 
     newWind.rowconfigure (0, weight=1, minsize=200)
     newWind.columnconfigure (0, weight=1, minsize=300)
@@ -25,7 +32,7 @@ def adminMenuScreen (root, id):
     frame.rowconfigure (0, weight=1)
     frame.rowconfigure (1, weight=1)
     frame.rowconfigure (2, weight=1)
-    # frame.rowconfigure (3, weight=1)
+    frame.rowconfigure (3, weight=1)
     frame.columnconfigure (0, weight=1)
 
     # root.mainloop()

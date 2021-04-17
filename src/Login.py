@@ -48,9 +48,15 @@ def loginScreen ():
         if (result[0][passCol] == password):
             if (isAdmin == 1):
                 print ('Openign admin menu')
+                root.withdraw()
+                uName.delete(0, 'end')
+                passwordBox.delete(0, 'end')
                 AdminMenu.adminMenuScreen (root, result[0][0])
             if (isAdmin == 0):
                 print ('Openign patient menu')
+                root.withdraw()
+                uName.delete(0, 'end')
+                passwordBox.delete(0, 'end')
                 PatientMenu.patientMenuScreen (root, result[0][0])
         else:
             print (password, result[0][passCol], '\npassword did not match')
