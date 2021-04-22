@@ -35,4 +35,4 @@ def adminMenuScreen (root, id):
     frame.rowconfigure (3, weight=1)
     frame.columnconfigure (0, weight=1)
 
-    # root.mainloop()
+#root.mainloop()
