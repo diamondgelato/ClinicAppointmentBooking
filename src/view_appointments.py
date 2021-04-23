@@ -30,6 +30,9 @@ root=tk.Tk() #toplevel change
 frame = tk.LabelFrame (root, padx=10, pady=10, bg="lightblue", text='Enter the Date to view the appointments')
 frame.grid(row=0, column=0, sticky='news')
 
+date=tk.Label()
+date.grid()
+#Date entry
 submit = ttk.Button(frame, text='Submit', command=view) #onClick=sub(date,time)
 submit.grid(row=3, column=0, columnspan=2)
 

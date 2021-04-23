@@ -47,6 +47,9 @@ import calendar
 #     import calendar
 #     import tkinter as tk
 #     from tkinter import ttk
+
+
+#Scrolling option 
 def getlist():
     #Need to display all the timings and dates of the appointments which are left.
     #dbconnection needed.
