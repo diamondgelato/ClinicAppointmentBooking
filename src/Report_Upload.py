@@ -20,6 +20,7 @@ def reportUploadScreen (root):
     window = tk.Toplevel (root)
     frame = tk.LabelFrame(window, text='Please upload the reports in pdf format only.', padx=10, pady=10,
                           font=("Verdana", 10), bg="#2C3A57",  fg = "red")
+
     frame.grid(row=0, column=0, sticky='news')
 
     def browseFiles():
