@@ -23,7 +23,7 @@ CREATE TABLE report (
     report_id INTEGER PRIMARY KEY AUTOINCREMENT,
     date TEXT NOT NULL,  -- ISO8601 string
     name TEXT NOT NULL,
-    file BLOB NOT NULL
+    file TEXT NOT NULL   -- path of file
 );
 
 CREATE TABLE doctor (

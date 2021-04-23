@@ -3,10 +3,13 @@ import tkinter as tk
 from tkinter import ttk
 from button import HoverButton
 from tkinter import messagebox
+import sqlite3 as sql
 
-def Book_Appointment():
+def Book_Appointment(root):
     #Connect to the database connectivity
     #Month needs to be edited
+
+    
 
     def invoke():
         selection="You selected the Time "+str(var.get())
@@ -121,13 +124,13 @@ def Book_Appointment():
     months=['January', 'February', 'March', 'April', 'May','June','July','August','September','October','November','December']
 
     # Building GUI
-    root = tk.Tk()
+    window = tk.Toplevel(root)
 
-    frame = tk.LabelFrame (root, padx=10, pady=10, bg="lightblue", text='Please enter your details for booking the appointment',
+    frame = tk.LabelFrame (window, padx=10, pady=10, text='Please enter your details for booking the appointment',
                           font=("Verdana", 10), bg = "#2C3A57", fg = "red")
     frame.grid(row=0, column=0, sticky='news')
 
-    frame2=tk.Frame (root, padx=10, pady=10, bg="#A3A3B1")
+    frame2=tk.Frame (window, padx=10, pady=10, bg="#A3A3B1")
     frame2.grid(row=1, column=0, sticky='news')
     doctors = ["Dr. Mihir Pandya","Dr. Vani Kamani","Dr. Mugdha Kurkure"]
 
@@ -139,7 +142,7 @@ def Book_Appointment():
     dropLabel=tk.Label(frame, text='Name of the Reference Doctor: ', font=("Verdana", 9), bg = "#2C3A57", fg = "white")
     drop = ttk.OptionMenu(frame, clicked , *doctors )
     Purpose = tk.Label(frame, text='Purpose of appointment: ', font=("Verdana", 9), bg = "#2C3A57", fg = "white")
-    PurposeBox = ttk.Entry(frame, width=30, textvariable=purpose_var, bg = "#A3A3B1")
+    PurposeBox = tk.Entry(frame, width=30, textvariable=purpose_var, bg = "#A3A3B1")
 
 
     dropLabel.grid(row=0,column=0)
@@ -156,23 +159,25 @@ def Book_Appointment():
     c = 0           # column of the calendar
 
     val1=""
-    for day in monthiter:
-        # day = next(monthiter)
-        if (day[3] == 0):
-            r+=1 
-            c = 0
+    # for day in monthiter:
+    #     # day = next(monthiter)
+    #     if (day[3] == 0):
+    #         r+=1 
+    #         c = 0
 
-        date_selected=str(day[2])+"/"+str(day[1])+"/"+str(day[0])
-        dayButton = HoverButton(frame2, text=day[2], width=5,activebackground='#00BE00', font=("Bahnschrift", 9),
-                                command=getAppointment())
-        dayButton.grid (row=r, column=c)
-        c+=1
+    #     date_selected=str(day[2])+"/"+str(day[1])+"/"+str(day[0])
+    #     dayButton = HoverButton(frame2, text=day[2], width=5,activebackground='#00BE00', font=("Bahnschrift", 9),
+    #                             command=getAppointment())
+    #     dayButton.grid (row=r, column=c)
+    #     c+=1
+
+    cal (2021, 4)
         
     submit = HoverButton(frame2, text='Submit', activebackground='#00BE00', font=("Bahnschrift", 9))
     submit.grid(row=13, column=0, columnspan=7)
 
-    root.rowconfigure (0, weight=1, minsize=300)
-    root.columnconfigure (0, weight=1, minsize=500)
+    window.rowconfigure (0, weight=1, minsize=300)
+    window.columnconfigure (0, weight=1, minsize=500)
 
     frame.rowconfigure (0, weight=1)
     frame.rowconfigure (1, weight=1)
@@ -204,12 +209,6 @@ def Book_Appointment():
 
 
     
-    root.mainloop()
+    window.mainloop()
 
-<<<<<<< HEAD
-Book_Appointment()  
-
-=======
-#Book_Appointment()
->>>>>>> main
-
+# Book_Appointment()

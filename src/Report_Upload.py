@@ -114,5 +114,5 @@ def reportUploadScreen (root):
 
     # Let the window wait for any events
     window.mainloop()
-root=tk.Tk()
-reportUploadScreen(root)
+# root=tk.Tk()
+# reportUploadScreen(root)

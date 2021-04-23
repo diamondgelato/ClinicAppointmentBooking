@@ -36,9 +36,9 @@ def patientMenuScreen (root, id):
     patientname = tk.Label (frame, text=nameString, wraplength=800, font=("Verdana", 10), bg = "#2C3A57", fg = "red")
     intro = tk.Label (frame, text="Patient Menu", wraplength=800, font=("Verdana", 10), bg = "#2C3A57", fg = "red")
     bookapp = HoverButton (frame, text="Book Appointments", width=20, activebackground='#00BE00',
-                           font=("Bahnschrift", 9), command=lambda: Book_Appointment.bookAppointmentScreen(root))
+                           font=("Bahnschrift", 9), command=lambda: Book_Appointment.Book_Appointment(root))
     viewreports = HoverButton (frame, text="View Reports",activebackground='#00BE00', font=("Bahnschrift", 9),
-                               width=20, command=lambda: PatientReportView.reportViewScreen (root))
+                               width=20, command=lambda: PatientReportView.PatientReportScreen (root))
     logout = HoverButton (frame, text="Log Out",activebackground='#00BE00', font=("Bahnschrift", 9),
                                width=20, command=logout)
 
