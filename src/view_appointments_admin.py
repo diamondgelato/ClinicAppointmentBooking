@@ -2,7 +2,7 @@ import calendar
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-import Book_Appointment
+import edit_appointments
 
 #Add the Calendar button
 #Database connectivity
@@ -22,7 +22,7 @@ def view():
     view1.heading(5, text='Time')
     view1.heading(6, text='Purpose')
 
-    edit = ttk.Button(frame1, text='Edit', command=Book_Appointment.Book_Appointment)
+    edit = ttk.Button(frame1, text='Edit', command=edit_appointments)
     edit.pack()
 
 
@@ -31,7 +31,7 @@ frame = tk.LabelFrame (root, padx=10, pady=10, bg="lightblue", text='Enter the D
 frame.grid(row=0, column=0, sticky='news')
 
 date=tk.Label()
-date.grid()
+date.grid(row)
 #Date entry
 submit = ttk.Button(frame, text='Submit', command=view) #onClick=sub(date,time)
 submit.grid(row=3, column=0, columnspan=2)

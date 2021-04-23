@@ -3,6 +3,7 @@ import Register
 import PatientMenu
 import AdminMenu
 
+
 def loginScreen ():
 
     def loginValidate ():
@@ -19,6 +20,12 @@ def loginScreen ():
         elif (username == 'patient1' and password == 'patient1'):
             # go to patient menu
             PatientMenu.patientMenuScreen (root)
+        elif(username!='admin' or username!='patient1'):
+            var2="Incorrect Username"
+            msg1=tk.messagebox.showerror("ERROR", var2)
+        elif(password!="admin" or password!='patient1'):
+            var2="Incorrect Password"
+            msg1=tk.messagebox.showerror("ERROR", var2)
 
     root = tk.Tk()
 
