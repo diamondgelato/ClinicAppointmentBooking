@@ -82,7 +82,7 @@ def loginScreen ():
     uNameLabel = tk.Label (frame, text="Username", font=("Verdana", 9), bg = "#2C3A57", fg = "white")
     passLabel = tk.Label (frame, text="Password", font=("Verdana", 9), bg = "#2C3A57", fg = "white")
     uName = tk.Entry(frame, width=20, bg = "#A3A3B1")
-    passwordBox = tk.Entry(frame, width=20, bg = "#A3A3B1")
+    passwordBox = tk.Entry(frame, width=20, bg = "#A3A3B1", show='*')
 
     login = HoverButton(frame,text="Log In", activebackground='#00BE00', font=("Bahnschrift", 9), command=loginValidate)
     register = HoverButton(frame,text="Register", activebackground='#00BE00', font=("Bahnschrift", 9),
