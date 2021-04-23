@@ -1,5 +1,6 @@
 import tkinter as tk
 import sqlite3 as sql
+from button import HoverButton
 
 import Register
 import PatientMenu
@@ -15,6 +16,7 @@ def loginScreen ():
 
         username = uName.get()
         password = passwordBox.get()
+
         isAdmin = 0
         passCol = 4
 
@@ -67,19 +69,23 @@ def loginScreen ():
     def enterCallback (event):
         loginValidate()
 
+
     root = tk.Tk()
     root.bind ('<Return>', enterCallback)
 
-    frame = tk.Frame (root, padx=20, pady=20, bg="lightblue")
+    frame = tk.Frame (root, padx=20, pady=20, bg="#2C3A57")
     frame.grid (row=0, column=0, sticky='news')
 
-    intro = tk.Label (frame, text="Welcome to Appointment Booking and Reports Management System", wraplength=800)
-    uNameLabel = tk.Label (frame, text="Username")
-    passLabel = tk.Label (frame, text="Password")
-    uName = tk.Entry(frame, width=20)
-    passwordBox = tk.Entry(frame, show='*', width=20)
-    login = tk.Button(frame, text='Log In', command=loginValidate)
-    register = tk.Button(frame, text='Register', command=lambda: Register.registerScreen(root))
+    intro = tk.Label (frame, text="Welcome to Appointment Booking and Reports Management System", wraplength=800,
+                      font=("Verdana", 10), bg = "#2C3A57", fg = "red")
+    uNameLabel = tk.Label (frame, text="Username", font=("Verdana", 9), bg = "#2C3A57", fg = "white")
+    passLabel = tk.Label (frame, text="Password", font=("Verdana", 9), bg = "#2C3A57", fg = "white")
+    uName = tk.Entry(frame, width=20, bg = "#A3A3B1")
+    passwordBox = tk.Entry(frame, width=20, bg = "#A3A3B1")
+
+    login = HoverButton(frame,text="Log In", activebackground='#00BE00', font=("Bahnschrift", 9), command=loginValidate)
+    register = HoverButton(frame,text="Register", activebackground='#00BE00', font=("Bahnschrift", 9),
+                           command=lambda: Register.registerScreen(root))
 
     intro.grid (row=0, column=0, columnspan=2)
     uNameLabel.grid (row=1, column=0)

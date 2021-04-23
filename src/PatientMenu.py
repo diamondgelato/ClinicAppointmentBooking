@@ -1,6 +1,7 @@
 import sqlite3 as sql
 import tkinter as tk
 from tkinter import ttk
+from button import HoverButton
 
 import ProgramVar as pv
 import Book_Appointment
@@ -29,14 +30,17 @@ def patientMenuScreen (root, id):
 
     newWind = tk.Toplevel(root, )
 
-    frame = tk.Frame (newWind, padx=20, pady=20)
+    frame = tk.Frame (newWind, padx=20, pady=20, bg="#2C3A57")
     frame.grid(row=0, column=0, sticky='news')
 
-    patientname = tk.Label (frame, text=nameString, wraplength=800)
-    intro = tk.Label (frame, text="Patient Menu", wraplength=800)
-    bookapp = ttk.Button (frame, text="Book Appointments", width=20, command=lambda: Book_Appointment.bookAppointmentScreen(root))
-    viewreports = ttk.Button (frame, text="View Reports", width=20, command=lambda: PatientReportView.reportViewScreen (root))
-    logout = ttk.Button (frame, text="Log Out", width=20, command=logout)
+    patientname = tk.Label (frame, text=nameString, wraplength=800, font=("Verdana", 10), bg = "#2C3A57", fg = "red")
+    intro = tk.Label (frame, text="Patient Menu", wraplength=800, font=("Verdana", 10), bg = "#2C3A57", fg = "red")
+    bookapp = HoverButton (frame, text="Book Appointments", width=20, activebackground='#00BE00',
+                           font=("Bahnschrift", 9), command=lambda: Book_Appointment.bookAppointmentScreen(root))
+    viewreports = HoverButton (frame, text="View Reports",activebackground='#00BE00', font=("Bahnschrift", 9),
+                               width=20, command=lambda: PatientReportView.reportViewScreen (root))
+    logout = HoverButton (frame, text="Log Out",activebackground='#00BE00', font=("Bahnschrift", 9),
+                               width=20, command=logout)
 
     patientname.grid(row=0, column=0)
     intro.grid(row=1, column=0)
