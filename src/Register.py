@@ -3,6 +3,7 @@ import sqlite3 as sql
 import tkinter as tk
 from tkinter import ttk
 import tkcalendar as tkc
+from button import HoverButton
 
 import ProgramVar as pv
 import PatientMenu
@@ -69,47 +70,42 @@ def registerScreen (root):
 
 
 
-    frame = tk.LabelFrame(newWind, text='New Patient Registration', padx=10, pady=10, bg="lightblue")
+    frame = tk.LabelFrame(newWind, text='New Patient Registration', padx=10, pady=10, font=("Verdana", 10), bg="#2C3A57", fg = "red")
     frame.grid(row=0, column=0, sticky='news')
     radioFrame = tk.Frame (frame, padx=100, pady=10, bg="lightblue")
 
 
 
-    fnameLabel = tk.Label(frame, text='First Name: ')
-    fnameBox = ttk.Entry(frame, width=30)
-
-    lnameLabel = tk.Label(frame, text='Last Name: ')
-    lnameBox = ttk.Entry(frame, width=30)
+    fnameLabel = tk.Label(frame, text='First Name: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    fnameBox = tk.Entry(frame, width=30, bg="#A3A3B1")
+    lnameLabel = tk.Label(frame, text='Last Name: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    lnameBox = tk.Entry(frame, width=30, bg="#A3A3B1")
+    unameLabel = tk.Label(frame, text='Username: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    unameBox = tk.Entry(frame, width=30, bg="#A3A3B1")
+    passLabel = tk.Label(frame, text='Password: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    passBox = tk.Entry(frame, width=30, bg="#A3A3B1")
     
-    unameLabel = tk.Label(frame, text='Username: ')
-    unameBox = tk.Entry(frame, width=30)
+    confLabel = tk.Label(frame, text='Confirm Password: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    confBox = ttk.Entry(frame, width=30, bg="#A3A3B1")
     
-    passLabel = tk.Label(frame, text='Password: ')
-    passBox = ttk.Entry(frame, width=30)
+    phoneLabel = tk.Label(frame, text='Phone Number: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    phoneBox = tk.Entry(frame, width=30, bg="#A3A3B1")
+    emailLabel = tk.Label(frame, text='E-mail: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    emailBox = tk.Entry(frame, width=30, bg="#A3A3B1")
+    submit = HoverButton(frame, text='Submit', activebackground='#00BE00', font=("Bahnschrift", 9))
     
-    confLabel = tk.Label(frame, text='Confirm Password: ')
-    confBox = ttk.Entry(frame, width=30)
+    addrLabel = tk.Label(frame, text='Address: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    addrBox = ttk.Entry(frame, width=30, bg="#A3A3B1")
     
-    phoneLabel = tk.Label(frame, text='Phone Number: ')
-    phoneBox = ttk.Entry(frame, width=30)
-    
-    emailLabel = tk.Label(frame, text='E-mail: ')
-    emailBox = ttk.Entry(frame, width=30)
-    
-    addrLabel = tk.Label(frame, text='Address: ')
-    addrBox = ttk.Entry(frame, width=30)
-    
-    dobLabel = tk.Label(frame, text='Select Date Of Birth: ')
+    dobLabel = tk.Label(frame, text='Select Date Of Birth: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
     dobselect = tkc.DateEntry (frame)
     
-    genderLabel = tk.Label(frame, text='Gender: ')
-    maleRadio = ttk.Radiobutton (radioFrame, text='Male', variable=genderVar, value='MALE')
-    femaleRadio = ttk.Radiobutton (radioFrame, text='Female', variable=genderVar, value='FEMALE')
-    otherRadio = ttk.Radiobutton (radioFrame, text='Other', variable=genderVar, value='OTHER')
+    genderLabel = tk.Label(frame, text='Gender: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
+    maleRadio = ttk.Radiobutton (radioFrame, text='Male', variable=genderVar, value='MALE', bg="#A3A3B1")
+    femaleRadio = ttk.Radiobutton (radioFrame, text='Female', variable=genderVar, value='FEMALE', bg="#A3A3B1")
+    otherRadio = ttk.Radiobutton (radioFrame, text='Other', variable=genderVar, value='OTHER', bg="#A3A3B1")
     
     submit = tk.Button(frame, text='Submit', command=submitCallback)
-
-
 
     fnameLabel.grid(row=0, column=0)
     fnameBox.grid(row=0, column=1)
@@ -137,8 +133,6 @@ def registerScreen (root):
     femaleRadio.grid(row=1, column=0, sticky='w')
     otherRadio.grid(row=2, column=0, sticky='w')
 
-
-
     newWind.rowconfigure (0, weight=1, minsize=1600)
     newWind.columnconfigure (0, weight=1, minsize=1200)
 
@@ -162,3 +156,4 @@ def registerScreen (root):
     radioFrame.columnconfigure (0, weight=1)
 
     # root.mainloop()
+

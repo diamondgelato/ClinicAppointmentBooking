@@ -1,6 +1,7 @@
 import calendar
 import tkinter as tk
 from tkinter import ttk
+from button import HoverButton
 from tkinter import messagebox
 
 def Book_Appointment():
@@ -121,12 +122,12 @@ def Book_Appointment():
 
     # Building GUI
     root = tk.Tk()
-    window=tk.Toplevel(root)
-    window.title("Book Appointment")
-    frame = tk.LabelFrame (window, padx=10, pady=10, bg="lightblue", text='Please enter your details for booking the appointment')
+
+    frame = tk.LabelFrame (root, padx=10, pady=10, bg="lightblue", text='Please enter your details for booking the appointment',
+                          font=("Verdana", 10), bg = "#2C3A57", fg = "red")
     frame.grid(row=0, column=0, sticky='news')
 
-    frame2=tk.Frame (window, padx=10, pady=10, bg="white")
+    frame2=tk.Frame (root, padx=10, pady=10, bg="#A3A3B1")
     frame2.grid(row=1, column=0, sticky='news')
     doctors = ["Dr. Mihir Pandya","Dr. Vani Kamani","Dr. Mugdha Kurkure"]
 
@@ -135,10 +136,10 @@ def Book_Appointment():
     
     # initial menu text
     clicked.set( "Dr. Mihir Pandya" )
-    dropLabel=tk.Label(frame, text='Name of the Reference Doctor: ')
+    dropLabel=tk.Label(frame, text='Name of the Reference Doctor: ', font=("Verdana", 9), bg = "#2C3A57", fg = "white")
     drop = ttk.OptionMenu(frame, clicked , *doctors )
-    Purpose = tk.Label(frame, text='Purpose of appointment: ')
-    PurposeBox = ttk.Entry(frame, width=30, textvariable=purpose_var)
+    Purpose = tk.Label(frame, text='Purpose of appointment: ', font=("Verdana", 9), bg = "#2C3A57", fg = "white")
+    PurposeBox = ttk.Entry(frame, width=30, textvariable=purpose_var, bg = "#A3A3B1")
 
 
     dropLabel.grid(row=0,column=0)
@@ -146,18 +147,37 @@ def Book_Appointment():
     Purpose.grid(row=1, column=0)
     PurposeBox.grid(row=1, column=1)
     # What about the month?
-    #Add previous and next month buttons
-    year=2021
-    month=4
-    cal(2021, 4)
 
-    window.rowconfigure (1, weight=1, minsize=300)
-    window.columnconfigure (0, weight=1, minsize=500)
+    for d in range(len(days)):
+        dayLabel = tk.Label (frame2, text=days[d], width=5)
+        dayLabel.grid (row=3, column=d)
 
-    # frame.rowconfigure (0, weight=1)
-    # frame.rowconfigure (1, weight=1)
-    # frame.columnconfigure (0, weight=1)
-    # frame.columnconfigure (1, weight=1)
+    r = 4           # row of the calendar
+    c = 0           # column of the calendar
+
+    val1=""
+    for day in monthiter:
+        # day = next(monthiter)
+        if (day[3] == 0):
+            r+=1 
+            c = 0
+
+        date_selected=str(day[2])+"/"+str(day[1])+"/"+str(day[0])
+        dayButton = HoverButton(frame2, text=day[2], width=5,activebackground='#00BE00', font=("Bahnschrift", 9),
+                                command=getAppointment())
+        dayButton.grid (row=r, column=c)
+        c+=1
+        
+    submit = HoverButton(frame2, text='Submit', activebackground='#00BE00', font=("Bahnschrift", 9))
+    submit.grid(row=13, column=0, columnspan=7)
+
+    root.rowconfigure (0, weight=1, minsize=300)
+    root.columnconfigure (0, weight=1, minsize=500)
+
+    frame.rowconfigure (0, weight=1)
+    frame.rowconfigure (1, weight=1)
+    frame.columnconfigure (0, weight=1)
+    frame.columnconfigure (1, weight=1)
 
     frame2.rowconfigure (0, weight=1)
     frame2.rowconfigure (1, weight=1)
@@ -172,6 +192,7 @@ def Book_Appointment():
     frame2.rowconfigure (10, weight=1)
     frame2.rowconfigure (11, weight=1)
     frame2.rowconfigure (12, weight=1)
+    frame2.rowconfigure (13, weight=1)
 
     frame2.columnconfigure (0, weight=1)
     frame2.columnconfigure (1, weight=1)
@@ -185,6 +206,10 @@ def Book_Appointment():
     
     root.mainloop()
 
+<<<<<<< HEAD
 Book_Appointment()  
 
+=======
+#Book_Appointment()
+>>>>>>> main
 
