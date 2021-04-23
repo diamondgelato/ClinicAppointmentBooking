@@ -1,7 +1,10 @@
 import tkinter as tk
+import sqlite3 as sql
+
 import Register
 import PatientMenu
 import AdminMenu
+import ProgramVar as pv
 
 def loginScreen ():
 
@@ -12,15 +15,60 @@ def loginScreen ():
 
         username = uName.get()
         password = passwordBox.get()
+        isAdmin = 0
+        passCol = 4
 
-        if (username == 'admin' and password == 'admin'):
-            # go to admin menu 
-            AdminMenu.adminMenuScreen (root)
-        elif (username == 'patient1' and password == 'patient1'):
-            # go to patient menu
-            PatientMenu.patientMenuScreen (root)
+        # IMPORTANT: CHANGE THE PATH TO THE ABSOLUTE PATH OF THE DATABASE ON YOUR PC OR THIS WILL NOT WORK FOR YOU
+        conn = sql.connect(pv.databasePath)
+        cur = conn.cursor()
+
+        # IF CHANGING THE PATH DOESNT WORK UNCOMMENT THE CODE BELOW
+        # if (username == 'admin' and password == 'admin'):
+        #     # go to admin menu 
+        #     AdminMenu.adminMenuScreen (root)
+        # elif (username == 'patient1' and password == 'patient1'):
+        #     # go to patient menu
+        #     PatientMenu.patientMenuScreen (root)
+
+        # search patient table for username
+        query = "SELECT * FROM patient WHERE username = ?"
+        cur.execute (query, (username, ))
+        result = cur.fetchall ()
+        print ('checking patient table')
+        
+        # search admin table for username
+        if (len(result) == 0):
+            query = "SELECT * FROM admin WHERE username = ?"
+            cur.execute (query, (username, ))
+            result = cur.fetchall ()
+            isAdmin = 1
+            passCol = 2
+            print ('checking admin table')
+
+        if (result[0][passCol] == password):
+            if (isAdmin == 1):
+                print ('Openign admin menu')
+                root.withdraw()
+                uName.delete(0, 'end')
+                passwordBox.delete(0, 'end')
+                AdminMenu.adminMenuScreen (root, result[0][0])
+            if (isAdmin == 0):
+                print ('Openign patient menu')
+                root.withdraw()
+                uName.delete(0, 'end')
+                passwordBox.delete(0, 'end')
+                PatientMenu.patientMenuScreen (root, result[0][0])
+        else:
+            print (password, result[0][passCol], '\npassword did not match')
+
+        conn.commit()
+        conn.close()
+
+    def enterCallback (event):
+        loginValidate()
 
     root = tk.Tk()
+    root.bind ('<Return>', enterCallback)
 
     frame = tk.Frame (root, padx=20, pady=20, bg="lightblue")
     frame.grid (row=0, column=0, sticky='news')
@@ -29,7 +77,7 @@ def loginScreen ():
     uNameLabel = tk.Label (frame, text="Username")
     passLabel = tk.Label (frame, text="Password")
     uName = tk.Entry(frame, width=20)
-    passwordBox = tk.Entry(frame, width=20)
+    passwordBox = tk.Entry(frame, show='*', width=20)
     login = tk.Button(frame, text='Log In', command=loginValidate)
     register = tk.Button(frame, text='Register', command=lambda: Register.registerScreen(root))
 
