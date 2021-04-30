@@ -47,6 +47,9 @@ import calendar
 #     import calendar
 #     import tkinter as tk
 #     from tkinter import ttk
+from src.button import HoverButton
+
+
 def getlist():
     #Need to display all the timings and dates of the appointments which are left.
     #dbconnection needed.
@@ -120,15 +123,15 @@ days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 root = tk.Tk()
 patient_var=tk.IntVar()
     #Frame to enter the Patient ID whose appointment needs to be edited
-frame = tk.LabelFrame(root, bg="light blue",text='Update records')
+frame = tk.LabelFrame(root, bg="#2C3A57",text='Update records')
 frame.grid(row=0, column=0, sticky='news') #frame 1
-PatientID = tk.Label(frame, text='PatientID ')
-PatientIDBox = tk.Entry(frame, width=30, textvariable= patient_var)
+PatientID = tk.Label(frame, text='PatientID ', font=("Verdana", 10), bg="#2C3A57", fg="red")
+PatientIDBox = tk.Entry(frame, width=30, textvariable= patient_var, bg = "#A3A3B1")
 PatientID.grid(row=0, column=0)
 PatientIDBox.grid(row=0, column=1)
 # PatientID.pack()
 # PatientIDBox.pack()
-ShowappBox=ttk.Button(frame, text='View the appointments', command=getlist)
+ShowappBox=HoverButton(frame, text='View the appointments', command=getlist)
 
 ShowappBox.grid(row=0, column=2, columnspan=2)
 #appointmenttaken frame 2
@@ -138,7 +141,7 @@ frame2.grid(row=2, column=0, sticky='news') #frame 3
 
 
 for d in range(len(days)):
-    dayLabel = ttk.Label(frame2, text=days[d], width=5)
+    dayLabel = tk.Label(frame2, text=days[d], width=5, font=("Verdana", 10), bg="#2C3A57", fg="red")
     dayLabel.grid(row=3, column=d)
 
 r = 4  # row of the calendar
@@ -149,7 +152,7 @@ for day in monthiter:
         r += 1
         c = 0
 
-    dayButton = ttk.Button(frame2, text=day[2], width=5, command=ShowAppointment)
+    dayButton = tk.Button(frame2, text=day[2], width=5, command=ShowAppointment)
     dayButton.grid(row=r, column=c)
     c += 1
 
