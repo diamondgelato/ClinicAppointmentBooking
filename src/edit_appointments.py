@@ -2,12 +2,56 @@ import tkinter as tk
 from tkinter import ttk
 import calendar
 import sqlite3 as sql
+import datetime
 
 import ProgramVar as pv
 
 def editAppointment (root):
     conn = sql.connect(pv.databasePath)
     cur = conn.cursor()
+
+    # gets all the appointments which have the given date and patient ID
+    def fetchAppointment (date, id):
+        # print (date)
+        stringDate = str(date)
+        # print (stringDate)
+        
+        query = "SELECT appointment.app_id, doctor.first_name, doctor.last_name, patient.patient_id, patient.first_name, patient.last_name, appointment.datetime, appointment.purpose FROM scheduled_app as sa INNER JOIN appointment ON appointment.app_id = sa.app_id INNER JOIN patient ON patient.patient_id = sa.patient_id INNER JOIN doctor ON doctor.doctor_id = sa.doctor_id WHERE appointment.datetime LIKE ? AND patient.patient_id = ?;"
+        cur.execute (query, ('%' + stringDate + '%', id, ))
+
+        result = cur.fetchall()
+        # print (result)
+
+        listy = [0, 1, 3, 4, 6, 7]
+
+        for row in result:
+            newrow = []
+            for x in listy:
+                if x == 1:
+                    newrow.append (str(row[1] + ' ' + row[2]))
+                elif x == 4:
+                    newrow.append (str(row[4] + ' ' + row[5]))
+                else:
+                    newrow.append (row[x])
+        
+        print (newrow)
+        return newrow
+
+        conn.commit ()
+
+    # fetchAppointment (datetime.date.fromisoformat('2021-05-04'), 1)
+    
+    # updates the given appointment ID to the datetime given by newdatetime 
+    def updateAppoinment (app_id, newdatetime):
+        query = 'UPDATE appointment SET datetime = ? WHERE app_id = ?'
+        stringDate = str(newdatetime)
+
+        cur.execute (query, (stringDate, app_id))
+        result = cur.fetchall ()
+        print (result)
+        print ('Record updated to date time', stringDate)
+
+        conn.commit ()
 
     #Scrolling option 
     def getlist():
@@ -62,6 +106,8 @@ def editAppointment (root):
 
     def submission(time,date):
         #db connectivity
+        print ('in submission')
+
         if(r!=val):
             num=var.get()
             times[index]=(time, val, "free", 0)
@@ -76,6 +122,7 @@ def editAppointment (root):
 
         # Getting calendar related data
         # monday = 0
+    
     def cal(year, month):
         firstday = calendar.weekday(year, month, 1)
 
