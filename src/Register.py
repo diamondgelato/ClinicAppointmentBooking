@@ -58,6 +58,7 @@ def registerScreen (root):
         # Open Patient Menu and close Register screen
         newWind.withdraw()
         PatientMenu.patientMenuScreen(root, result[0][0])
+        conn.commit()
 
     def enterCallback(event):
         submitCallback()

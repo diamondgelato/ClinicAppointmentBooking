@@ -64,3 +64,12 @@ VALUES ('admin', 'admin');
 
 INSERT INTO patient (first_name, last_name, username, password, phone_no, emaiL, birth_date, gender, address)
 VALUES ('Mugdha', 'Kurkure', 'mugs1234', 'mugs1234', '9008210569', 'mugdha.k@gmail.com', '2001-09-18', 'FEMALE', 'Thane');
+
+INSERT INTO doctor (first_name, last_name, qualification)
+VALUES ('Mihir', 'Pandya', 'Obstretician');
+
+INSERT INTO doctor (first_name, last_name, qualification)
+VALUES ('Mugdha', 'Kurkure', 'Pediatrician');
+
+INSERT INTO doctor (first_name, last_name, qualification)
+VALUES ('Vani', 'Kamani', 'Nutritionist');

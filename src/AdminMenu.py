@@ -4,6 +4,7 @@ from button import HoverButton
 import Report_Upload
 import edit_appointments
 import view_appointments_admin as adminView
+import AdminReportView
 
 """
 Admin Menu
@@ -25,11 +26,11 @@ def adminMenuScreen(root, id):
     frame.grid(row=0, column=0, sticky='news')
 
     intro = tk.Label(frame, text="Admin Menu", wraplength=800, font=("Verdana", 10), bg="#2C3A57", fg="red")
-    viewapp = HoverButton(frame, text="View Appointments", activebackground='#00BE00', font=("Bahnschrift", 9), command=lambda: adminView.ViewAppointmentAdmin(root))
+    viewapp = HoverButton(frame, text="View Appointments", activebackground='#00BE00', font=("Bahnschrift", 9), command=lambda: adminView.ViewAppointmentAdmin(root, id))
     editapp = HoverButton(frame, text="Edit Appointments", activebackground='#00BE00', font=("Bahnschrift", 9), command=lambda: edit_appointments.editAppointment(root))
     uploadreports = HoverButton(frame, text="Upload Reports", activebackground='#00BE00', font=("Bahnschrift", 9),
                              command=lambda: Report_Upload.reportUploadScreen(root))
-    viewreports = HoverButton(frame, text="View Reports", activebackground='#00BE00', font=("Bahnschrift", 9))
+    viewreports = HoverButton(frame, text="View Reports", activebackground='#00BE00', font=("Bahnschrift", 9), command=lambda: AdminReportView.AdminReportScreen(root))
     setreminder = HoverButton(frame, text="Set Reminder", activebackground='#00BE00', font=("Bahnschrift", 9))
     logout =  HoverButton(frame, text="Log Out", activebackground='#00BE00', font=("Bahnschrift", 9), command=logout)
 
