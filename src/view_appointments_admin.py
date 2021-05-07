@@ -8,6 +8,9 @@ import edit_appointments
 #Database connectivity
 #Connect the Edit Button to the Edit appointments
 #when connected the other program runs before this, should be reverse
+from src.button import HoverButton
+
+
 def view():
     frame1 = tk.LabelFrame (root, padx=10, pady=10, bg="white", text='The Appointments scheduled for the day')
     frame1.grid(row=1, column=0, sticky='news')
@@ -27,13 +30,11 @@ def view():
 
 
 root=tk.Tk() #toplevel change
-frame = tk.LabelFrame (root, padx=10, pady=10, bg="lightblue", text='Enter the Date to view the appointments')
+frame = tk.LabelFrame (root, padx=10, pady=10, bg="#2C3A57", text='Enter the Date to view the appointments')
 frame.grid(row=0, column=0, sticky='news')
 
-date=tk.Label()
-date.grid(row)
-#Date entry
-submit = ttk.Button(frame, text='Submit', command=view) #onClick=sub(date,time)
+submit = HoverButton(frame, text='Submit', command=view, activebackground='#00BE00', font=("Bahnschrift", 9))
+#onClick=sub(date,time)
 submit.grid(row=3, column=0, columnspan=2)
 
 root.mainloop()

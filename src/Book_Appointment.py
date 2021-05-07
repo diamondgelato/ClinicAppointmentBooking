@@ -1,6 +1,7 @@
 import calendar
 import tkinter as tk
 from tkinter import ttk
+from button import HoverButton
 from tkinter import messagebox
 
 def Book_Appointment():
@@ -121,12 +122,12 @@ def Book_Appointment():
 
     # Building GUI
     root = tk.Tk()
-    window=tk.Toplevel(root)
-    window.title("Book Appointment")
-    frame = tk.LabelFrame (window, padx=10, pady=10, bg="lightblue", text='Please enter your details for booking the appointment')
+
+    frame = tk.LabelFrame (root, padx=10, pady=10, text='Please enter your details for booking the appointment',
+                          font=("Verdana", 10), bg = "#2C3A57", fg = "red")
     frame.grid(row=0, column=0, sticky='news')
 
-    frame2=tk.Frame (window, padx=10, pady=10, bg="white")
+    frame2=tk.Frame (root, padx=10, pady=10, bg="#A3A3B1")
     frame2.grid(row=1, column=0, sticky='news')
     doctors = ["Dr. Mihir Pandya","Dr. Vani Kamani","Dr. Mugdha Kurkure"]
 
@@ -135,10 +136,10 @@ def Book_Appointment():
     
     # initial menu text
     clicked.set( "Dr. Mihir Pandya" )
-    dropLabel=tk.Label(frame, text='Name of the Reference Doctor: ')
+    dropLabel=tk.Label(frame, text='Name of the Reference Doctor: ', font=("Verdana", 9), bg = "#2C3A57", fg = "white")
     drop = ttk.OptionMenu(frame, clicked , *doctors )
-    Purpose = tk.Label(frame, text='Purpose of appointment: ')
-    PurposeBox = ttk.Entry(frame, width=30, textvariable=purpose_var)
+    Purpose = tk.Label(frame, text='Purpose of appointment: ', font=("Verdana", 9), bg = "#2C3A57", fg = "white")
+    PurposeBox = ttk.Entry(frame, width=30, textvariable=purpose_var, bg = "#A3A3B1")
 
 
     dropLabel.grid(row=0,column=0)
@@ -172,6 +173,7 @@ def Book_Appointment():
     frame2.rowconfigure (10, weight=1)
     frame2.rowconfigure (11, weight=1)
     frame2.rowconfigure (12, weight=1)
+    frame2.rowconfigure (13, weight=1)
 
     frame2.columnconfigure (0, weight=1)
     frame2.columnconfigure (1, weight=1)
@@ -185,6 +187,5 @@ def Book_Appointment():
     
     root.mainloop()
 
-Book_Appointment()  
-
+#Book_Appointment()
 

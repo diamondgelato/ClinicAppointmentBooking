@@ -3,7 +3,53 @@ from tkinter import ttk
 import calendar
 
 
-#Scrolling option 
+# def view():
+#     root1 = Tk()
+#     frame1 = Frame(root1)
+#     frame1.pack(side=tk.LEFT, padx=20)
+#     view1 = ttk.Treeview(frame1, columns=(1, 2, 3, 4, 5), show='headings', height='3')
+#     view1.pack()
+#     tree.column('size', width=100, anchor='center')
+#     tree.heading('size', text='Size')
+#     view1.heading(1, text='Appointment ID')
+#     view1.heading(2, text='Date')
+#     view1.heading(3, text='Time')
+#     view1.heading(4, text='Purpose')
+#     view1.heading(5, text='Status')
+#     root1.title('Appointment Data')
+#     root1.geometry('1300x1000')
+#     root1.mainloop()
+
+# def delete():
+#     root = tk.Tk()
+
+#     frame = tk.Frame(root, padx=20, pady=20, bg="lightblue")
+#     frame.grid(row=0, column=0, sticky='news')
+
+#     AppointmentIDLabel = tk.Label(frame, text='AppointmentID ')
+#     AppointmentIDBox = ttk.Entry(frame, width=30)
+#     AppointmentIDLabel.grid(row=1, column=0)
+#     AppointmentIDBox.grid(row=1, column=1)
+
+#     delete = tk.Button(frame, text='Delete')
+
+#     delete.grid(row=2, column=0, columnspan=2)
+
+#     root.rowconfigure(0, weight=1, minsize=200)
+#     root.columnconfigure(0, weight=1, minsize=300)
+#     frame.rowconfigure(1, weight=1)
+#     frame.columnconfigure(0, weight=1)
+
+#     root.mainloop()
+
+
+# def edit():
+#     import calendar
+#     import tkinter as tk
+#     from tkinter import ttk
+from src.button import HoverButton
+
+
 def getlist():
     #Need to display all the timings and dates of the appointments which are left.
     #dbconnection needed.
@@ -124,28 +170,15 @@ window.title("Edit Appointments")
 
 patient_var=tk.IntVar()
     #Frame to enter the Patient ID whose appointment needs to be edited
-frame = tk.LabelFrame(window, bg="light blue",text='Update appointments')
+frame = tk.LabelFrame(root, bg="#2C3A57",text='Update records')
 frame.grid(row=0, column=0, sticky='news') #frame 1
-
-# canvas=tk.Canvas(frame,bg='#FFFFFF',width=300,height=300,scrollregion=(0,0,500,500))
-# vbar=tk.Scrollbar(frame,orient='vertical')
-# vbar.grid(row=0, column=0, sticky='E', rowspan=3, columnspan=3)
-# vbar.config(command=canvas.yview)
-# canvas.config(width=300,height=300)
-# canvas.config( yscrollcommand=vbar.set)
-# canvas.grid(row=0, column=0, sticky='E' , rowspan=3, columnspan=3)
-
-
-
-
-
-PatientID = tk.Label(frame, text='PatientID ')
-PatientIDBox = tk.Entry(frame, width=30, textvariable= patient_var)
+PatientID = tk.Label(frame, text='PatientID ', font=("Verdana", 10), bg="#2C3A57", fg="red")
+PatientIDBox = tk.Entry(frame, width=30, textvariable= patient_var, bg = "#A3A3B1")
 PatientID.grid(row=0, column=0)
 PatientIDBox.grid(row=0, column=1)
 # PatientID.pack()
 # PatientIDBox.pack()
-ShowappBox=ttk.Button(frame, text='View the appointments', command=getlist)
+ShowappBox=HoverButton(frame, text='View the appointments', command=getlist)
 
 ShowappBox.grid(row=0, column=2, columnspan=2)
 #appointmenttaken frame 2
@@ -157,23 +190,14 @@ year=2021
 month=4
 cal(2021, 4)
 
-# for d in range(len(days)):
-#     dayLabel = ttk.Label(frame2, text=days[d], width=5)
-#     dayLabel.grid(row=3, column=d)
-
-# r = 4  # row of the calendar
-# c = 0  # column of the calendar
-# for day in monthiter:
-#         # day = next(monthiter)
-#     if (day[3] == 0):
-#         r += 1
-#         c = 0
-
-#     dayButton = ttk.Button(frame2, text=day[2], width=5, command=ShowAppointment)
-#     dayButton.grid(row=r, column=c)
-#     c += 1
+for d in range(len(days)):
+    dayLabel = tk.Label(frame2, text=days[d], width=5, font=("Verdana", 10), bg="#2C3A57", fg="red")
+    dayLabel.grid(row=3, column=d)
 
 
+    dayButton = tk.Button(frame2, text=day[2], width=5, command=ShowAppointment)
+    dayButton.grid(row=r, column=c)
+    c += 1
 
 window.rowconfigure(0, weight=1)
 window.columnconfigure(0, weight=1)
