@@ -38,7 +38,7 @@ def patientMenuScreen (root, id):
     bookapp = HoverButton (frame, text="Book Appointments", width=20, activebackground='#00BE00',
                            font=("Bahnschrift", 9), command=lambda: Book_Appointment.Book_Appointment(root, id))
     viewreports = HoverButton (frame, text="View Reports",activebackground='#00BE00', font=("Bahnschrift", 9),
-                               width=20, command=lambda: PatientReportView.PatientReportScreen (root))
+                               width=20, command=lambda: PatientReportView.PatientReportScreen (root, id))
     logout = HoverButton (frame, text="Log Out",activebackground='#00BE00', font=("Bahnschrift", 9),
                                width=20, command=logout)
 
