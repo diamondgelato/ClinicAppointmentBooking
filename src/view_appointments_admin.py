@@ -30,8 +30,9 @@ def ViewAppointmentAdmin(root, id):
 
         listy = [0, 1, 3, 4, 6, 7]
 
+        newrow = []
+
         for row in result:
-            newrow = []
             for x in listy:
                 if x == 1:
                     newrow.append (str(row[1] + ' ' + row[2]))

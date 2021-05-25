@@ -10,12 +10,37 @@ from tkinter import ttk
 from tkinter import filedialog
 import tkcalendar as tkc
 from button import HoverButton
+import sqlite3 as sql
 
+import ProgramVar as pv
 #db connectivity
 #View Buttons code
 
 def AdminReportScreen (root):
+    conn = sql.connect(pv.databasePath)
+    cur = conn.cursor()
+
     def view_date():
+        # query = 'SELECT report.report_id, patient_report.patient_id, patient.first_name, patient.last_name, report.name, report.file
+        #          FROM report
+        #          JOIN patient_report ON report.report_id = patient_report.report_id
+        #          JOIN patient ON patient.patient_id = patient_report.patient_id
+        #          WHERE report.date = ?;'
+
+        try:
+            query = 'SELECT report.report_id, patient_report.patient_id, patient.first_name, patient.last_name, report.name, report.file FROM report JOIN patient_report ON report.report_id = patient_report.report_id JOIN patient ON patient.patient_id = patient_report.patient_id WHERE report.date = ?;'
+            date = date_select.get_date().isoformat()
+            # print (date)
+
+            cur.execute (query, (date,))
+            result = cur.fetchall()
+
+            print (result)
+
+            conn.commit()
+        except Exception as e:
+            print(e)
+
         view1.heading(1, text='Report ID')
         view1.heading(2, text='Patient ID')
         view1.heading(3, text='Patient Name')
@@ -23,6 +48,26 @@ def AdminReportScreen (root):
         view1.heading(5, text='Click here to view')
 
     def view_patient():
+        # query:
+        # 'SELECT report.report_id, report.date, patient.first_name, patient.last_name, report.name, report.file
+        # FROM report
+        # JOIN patient_report ON report.report_id = patient_report.report_id
+        # JOIN patient ON patient.patient_id = patient_report.patient_id
+        # WHERE patient_report.patient_id = ?;'
+
+        try:
+            query = 'SELECT report.report_id, report.date, patient.first_name, patient.last_name, report.name, report.file FROM report JOIN patient_report ON report.report_id = patient_report.report_id JOIN patient ON patient.patient_id = patient_report.patient_id WHERE patient_report.patient_id = ?;'
+            patient_id = int(id_select.get())
+            print (patient_id)
+
+            cur.execute (query, (patient_id,))
+            result = cur.fetchall()
+
+            print (result)
+
+            conn.commit()
+        except Exception as e:
+            print(e)
 
         view1.heading(1, text='Report ID')
         view1.heading(2, text='Date')
