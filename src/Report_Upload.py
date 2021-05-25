@@ -8,7 +8,6 @@
 import tkinter as tk
 from tkinter import Label, Button
 from tkinter import ttk
-from tkinter import messagebox
 from button import HoverButton
   
 # import filedialog module
@@ -68,14 +67,12 @@ def reportUploadScreen (root):
     report_var=tk.StringVar()
 
     # Create a File Explorer label
-    fnameLabel = tk.Label(frame, text='Patient ID: ')
-    fnameBox = ttk.Entry(frame, width=30, textvariable=patient_id_var)
-    # lnameLabel = tk.Label(frame, text='Date: ')
-    # lnameBox = ttk.Entry(frame, width=30)
-    # add Calendar for the date- Mugdha's code
-    # can we directly add today's date rather than getting an input??
-    unameLabel = tk.Label(frame, text='Name of the Report: ')
-    unameBox = ttk.Entry(frame, width=30, textvariable=report_var)
+    fnameLabel = tk.Label(frame, text='Patient ID: ',font=("Verdana", 9), bg = "#2C3A57", fg = "white")
+    fnameBox = tk.Entry(frame, width=30, bg = "#A3A3B1")
+    lnameLabel = tk.Label(frame, text='Date: ', font=("Verdana", 9), bg = "#2C3A57", fg = "white")
+    lnameBox = tk.Entry(frame, width=30, bg = "#A3A3B1")
+    unameLabel = tk.Label(frame, text='Name of the Report: ', font=("Verdana", 9), bg = "#2C3A57", fg = "white")
+    unameBox = tk.Entry(frame, width=30, bg = "#A3A3B1")
 
     label_file_explorer = Label(frame,
                                 text = "Click on browse to upload the file here",
@@ -117,5 +114,5 @@ def reportUploadScreen (root):
 
     # Let the window wait for any events
     window.mainloop()
-root=tk.Tk()
-reportUploadScreen(root)
+# root=tk.Tk()
+# reportUploadScreen(root)

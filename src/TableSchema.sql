@@ -23,7 +23,7 @@ CREATE TABLE report (
     report_id INTEGER PRIMARY KEY AUTOINCREMENT,
     date TEXT NOT NULL,  -- ISO8601 string
     name TEXT NOT NULL,
-    file BLOB NOT NULL
+    file TEXT NOT NULL   -- path of file
 );
 
 CREATE TABLE doctor (
@@ -64,3 +64,12 @@ VALUES ('admin', 'admin');
 
 INSERT INTO patient (first_name, last_name, username, password, phone_no, emaiL, birth_date, gender, address)
 VALUES ('Mugdha', 'Kurkure', 'mugs1234', 'mugs1234', '9008210569', 'mugdha.k@gmail.com', '2001-09-18', 'FEMALE', 'Thane');
+
+INSERT INTO doctor (first_name, last_name, qualification)
+VALUES ('Mihir', 'Pandya', 'Obstretician');
+
+INSERT INTO doctor (first_name, last_name, qualification)
+VALUES ('Mugdha', 'Kurkure', 'Pediatrician');
+
+INSERT INTO doctor (first_name, last_name, qualification)
+VALUES ('Vani', 'Kamani', 'Nutritionist');
