@@ -23,6 +23,8 @@ def patientMenuScreen (root, id):
     cur.execute (query, (id, ))
     result = cur.fetchall()
 
+    nameString = 'Patient Name: ' + result[0][1] + ' ' + result[0][2];
+
     conn.commit()
     conn.close()
 

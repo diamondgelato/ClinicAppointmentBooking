@@ -57,11 +57,10 @@ def reportUploadScreen (root):
             # p_id=str(p_id)
             var1= "Patient ID: "+p_id +"\nName of the report: "+report
             msg=tk.messagebox.askquestion("Are you sure?", var1 )
-            if(msg=="yes"):
-                copyReportFile()
-                addReports()
+            #if(msg=="yes"):
             #db connectivity
-            
+            copyReportFile()
+            addReports()
         else:
             var2="Please fill in the details"
             msg1=tk.messagebox.showerror("ERROR", var2)
