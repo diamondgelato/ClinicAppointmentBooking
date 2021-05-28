@@ -125,10 +125,13 @@ def Book_Appointment(root, id):
             times=["10:30am", "11:00am","11:30am","12:00pm","12:30pm"]
             var1= "Date: "+date_selected +"\nTime: "+times[t]+"\nDoctor: "+doc+"\nPurpose: "+pur
             msg=tk.messagebox.askquestion("Are you sure?", var1 );
-            # if(msg=="yes"):
-            #sub()
-            #connect to database
-            addAppointmentDB (doc, pur, date_selected, times[t])
+            
+            if(msg=="yes"):
+                #connect to database
+                addAppointmentDB (doc, pur, date_selected, times[t])
+            else:
+                # close the window
+                pass
         else:
             var2="Please fill in the purpose"
             msg1=tk.messagebox.showerror("ERROR", var2)
