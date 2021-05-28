@@ -6,6 +6,7 @@ import Register
 import PatientMenu
 import AdminMenu
 import ProgramVar as pv
+from wp import notification
 
 
 def loginScreen ():
@@ -54,6 +55,7 @@ def loginScreen ():
                 root.withdraw()
                 uName.delete(0, 'end')
                 passwordBox.delete(0, 'end')
+                notification("2021-05-29 04:30:00",0) #random datetime string sent
                 AdminMenu.adminMenuScreen (root, result[0][0])
             if (isAdmin == 0):
                 print ('Openign patient menu')
@@ -111,3 +113,4 @@ def loginScreen ():
 
 if __name__ == '__main__':
     loginScreen ()
+    

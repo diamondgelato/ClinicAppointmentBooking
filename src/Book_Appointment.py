@@ -7,11 +7,12 @@ import sqlite3 as sql
 import datetime
 
 import ProgramVar as pv
+from wp import notification
 
 def Book_Appointment(root, id):
     #Connect to the database connectivity
     #Month needs to be edited
-
+    #allowing book appointment for yesterday??
     conn = sql.connect(pv.databasePath)
     cur = conn.cursor()
 
@@ -19,13 +20,16 @@ def Book_Appointment(root, id):
     # adds data to the database
     def addAppointmentDB (doctor, purpose, date, time):
         date = date.split(',')[0]
-        date = datetime.date.fromisoformat (date)
+        now=datetime.datetime.now()
+        date1 = datetime.date.fromisoformat (date)
         time = time[:-2]
         time = datetime.time.fromisoformat (time)
         
         # add to appointment table
-        dbtime = datetime.datetime.combine (date, time)
+        dbtime = datetime.datetime.combine (date1, time)
         params = (str(dbtime), purpose, 'scheduled')
+        if(date==now.date()):
+            notification(str(dbtime),1, id)
         query = "INSERT INTO appointment (datetime, purpose, status) VALUES (?, ?, ?);"
         
         cur.execute (query, params)
@@ -123,6 +127,8 @@ def Book_Appointment(root, id):
             t=time.get()
             date_selected=date
             times=["10:30am", "11:00am","11:30am","12:00pm","12:30pm"]
+            #only presentation will have to add new appointment timings
+
             var1= "Date: "+date_selected +"\nTime: "+times[t]+"\nDoctor: "+doc+"\nPurpose: "+pur
             msg=tk.messagebox.askquestion("Are you sure?", var1 );
             
