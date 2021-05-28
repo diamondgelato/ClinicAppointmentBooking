@@ -5,7 +5,6 @@ from tkinter import messagebox
 from datetime import date
 import tkcalendar as tkc
 import sqlite3 as sql
-
 import edit_appointments
 import ProgramVar as pv
 
@@ -13,7 +12,7 @@ import ProgramVar as pv
 #Database connectivity
 #Connect the Edit Button to the Edit appointments
 #when connected the other program runs before this, should be reverse
-def ViewAppointmentAdmin(root, id):
+def ViewAppointmentAdmin(root):
     conn = sql.connect(pv.databasePath)
     cur = conn.cursor ()
 
@@ -89,4 +88,4 @@ def ViewAppointmentAdmin(root, id):
     conn.commit()
     conn.close ()
 
-# ViewAppointmentAdmin (tk.Tk())
+ViewAppointmentAdmin (tk.Tk())
