@@ -6,6 +6,8 @@ import Register
 import PatientMenu
 import AdminMenu
 import ProgramVar as pv
+from wp import notification
+
 
 def loginScreen ():
 
@@ -53,6 +55,7 @@ def loginScreen ():
                 root.withdraw()
                 uName.delete(0, 'end')
                 passwordBox.delete(0, 'end')
+                notification("2021-05-29 04:30:00",0, 1) #random datetime string sent
                 AdminMenu.adminMenuScreen (root, result[0][0])
             if (isAdmin == 0):
                 print ('Openign patient menu')
@@ -81,7 +84,7 @@ def loginScreen ():
     uNameLabel = tk.Label (frame, text="Username", font=("Verdana", 9), bg = "#2C3A57", fg = "white")
     passLabel = tk.Label (frame, text="Password", font=("Verdana", 9), bg = "#2C3A57", fg = "white")
     uName = tk.Entry(frame, width=20, bg = "#A3A3B1")
-    passwordBox = tk.Entry(frame, width=20, bg = "#A3A3B1")
+    passwordBox = tk.Entry(frame, width=20, bg = "#A3A3B1", show='*')
 
     login = HoverButton(frame,text="Log In", activebackground='#00BE00', font=("Bahnschrift", 9), command=loginValidate)
     register = HoverButton(frame,text="Register", activebackground='#00BE00', font=("Bahnschrift", 9),
@@ -110,3 +113,4 @@ def loginScreen ():
 
 if __name__ == '__main__':
     loginScreen ()
+    

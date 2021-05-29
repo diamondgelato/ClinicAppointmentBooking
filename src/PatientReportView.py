@@ -6,83 +6,107 @@
 import tkinter as tk
 from tkinter import Label, Button
 from tkinter import ttk
-from button import HoverButton
-
 # import filedialog module
 from tkinter import filedialog
+import tkcalendar as tkc
+from button import HoverButton
+#db connectivity
+import sqlite3 as sql
+import os
 
+import ProgramVar as pv
+#View Buttons code
 
-def reportViewScreen(root):
-    # Function for opening the
-    # file explorer window
-    # window = tk.Tk()
-    window = tk.Toplevel(root, )
+def PatientReportScreen (root, id):
+    conn = sql.connect (pv.databasePath)
+    cur = conn.cursor ()
+    def fileopen(path):
+        print(path)
+        os.startfile(path)
 
-    frame = tk.LabelFrame(window, text='You can only download the files here.', padx=10, pady=10,
-                          font=("Verdana", 10), bg="#2C3A57", fg="red")
-    frame.grid(row=0, column=0, sticky='news')
+    # gets information for reports from the database
+    def fetchReportsDB():        
+        # query:
+        # 'SELECT report.report_id, report.date, patient.first_name, patient.last_name, report.name, report.file
+        # FROM report
+        # JOIN patient_report ON report.report_id = patient_report.report_id
+        # JOIN patient ON patient.patient_id = patient_report.patient_id
+        # WHERE patient_report.patient_id = ?;'
+        
+        print("Hey1")
+        result = 0
+        try:
+            query = 'SELECT report.report_id, report.date, patient.first_name, patient.last_name, report.name, report.file FROM report JOIN patient_report ON report.report_id = patient_report.report_id JOIN patient ON patient.patient_id = patient_report.patient_id WHERE patient_report.patient_id = ?;'
+            # patient_id = int(id_select.get())
+            # print (id)
 
-    def SaveFiles():
-        filename = filedialog.asksaveasfilename(initialdir="/",
-                                                title="Save the file",
-                                                filetypes=(("Text files",
-                                                            "*.pdf*"),
-                                                           ("all files",
-                                                            "*.*")))  # Get the file to be saved from the database.
+            cur.execute (query, (id,))
+            result = cur.fetchall()
 
-        # Change label contents
-        label_file_explorer.configure(text="File To be Saved: " + filename)
+            print (result)
 
-    # Create the root window
+            conn.commit()
+        except Exception as e:
+            print(e)
 
-    # Set window title
-    window.title('Save and View Reports')
+        count=0
+        for record in result:
+            name=record[2]+" "+record[3]
+            view1.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], name, record[4]))
+            count+=1
+        
+        blank=tk.Label(sideframe, text='', background="#2C3A57")
+        blank.grid(row=0,column=0)
+        
+        count=1
+        for rec in result:
+            action=HoverButton(sideframe, text="View", width='10', command=lambda rec=rec:fileopen(rec[5]), activebackground='#00BE00', font=("Bahnschrift", 9))
+            action.grid(row=count, column=0)
+            count+=1
 
-    # Set window background color
-    window.config(background="white")
+    # opens the selected report  
+    def openReport ():
+        pass
 
-    # Create a File Explorer label
-    fnameLabel = tk.Label(frame, text='Patient ID: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
-    fnameBox = tk.Entry(frame, width=30, bg="#A3A3B1")
-    lnameLabel = tk.Label(frame, text='Date: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
-    lnameBox = tk.Entry(frame, width=30, bg="#A3A3B1")
+    # root=tk.Tk() #toplevel change
+    window=tk.Toplevel(root)
+    # frame = tk.LabelFrame (window, padx=10, pady=10, bg="lightblue", text='Enter the details to view reports')
+    # frame.grid(row=0, column=0, sticky='news')
+    frame1 = tk.LabelFrame (window, padx=10, pady=10, bg="#2C3A57", text='View the Reports', foreground="red", font=("Verdana", 10))
+    frame1.grid(row=0, column=0, sticky='news')
 
-    label_file_explorer = Label(frame,
-                                text="Click on search to save the file",
-                                width=100, height=4, justify="center",
-                                fg = "black", bg="#A3A3B1",font=("Verdana", 9))
+    window.rowconfigure(0, weight=1)
+    window.columnconfigure(0, weight=1)
 
-    button_search = HoverButton(frame,
-                           text="Search",font=("Bahnschrift", 9),activebackground='#00BE00',
-                           command=SaveFiles)
+    # frame1 = tk.LabelFrame (window, padx=10, pady=10, bg="#2C3A57", text='View the Reports', foreground="red", font=("Verdana", 10))
+    # frame1.grid(row=1, column=0, sticky='wnse')
 
-    button_exit = HoverButton(frame,
-                         text="Exit",font=("Bahnschrift", 9),activebackground='#00BE00', command='exit')
+    view1 = ttk.Treeview(frame1, columns=(1, 2, 3, 4), show='headings', height='5')
+    view1.heading(1, text='Report ID')
+    view1.heading(2, text='Date')
+    view1.heading(3, text='Patient Name')
+    view1.heading(4, text='Name of the Report')
 
-    # Grid method is chosen for placing
-    # the widgets at respective positions
-    # in a table like structure by
-    # specifying rows and columns
-    fnameLabel.grid(row=0, column=0)
-    fnameBox.grid(row=0, column=1)
-    lnameLabel.grid(row=1, column=0)
-    lnameBox.grid(row=1, column=1)
+    view1.column(1, width=400)
+    view1.column(2, width=400)
+    view1.column(3, width=400)
+    view1.column(4, width=400)
 
-    label_file_explorer.grid(column=0, row=3, columnspan=2)
-    button_search.grid(column=0, row=4, columnspan=2)
-    button_exit.grid(column=0, row=5, columnspan=2)
+    sideframe=tk.Frame(window, padx=10, pady=10, bg="#2C3A57")
+    sideframe.grid(row=0, column=1, sticky='ensw')
+    sideframe.columnconfigure(0, weight=0)
 
-    window.rowconfigure(0, weight=1, minsize=500)
-    window.columnconfigure(0, weight=1, minsize=700)
-    frame.rowconfigure(0, weight=1)
-    frame.rowconfigure(1, weight=1)
-    frame.rowconfigure(2, weight=1)
-    frame.rowconfigure(3, weight=1)
-    frame.rowconfigure(4, weight=1)
-    frame.rowconfigure(5, weight=1)
+    fetchReportsDB()
 
-    frame.columnconfigure(0, weight=1)
-    frame.columnconfigure(1, weight=1)
+    view1.grid(row=0,column=0, sticky='ewns')
 
-    # Let the window wait for any events
-    window.mainloop()
+    frame1.columnconfigure(0, weight=1)
+    frame1.columnconfigure(1, weight=1)
+    frame1.columnconfigure(2, weight=1)
+    frame1.columnconfigure(3, weight=1)
+    frame1.columnconfigure(4, weight=1)
+
+    pt_id=tk.IntVar()
+
+    conn.commit ()
+    conn.close ()

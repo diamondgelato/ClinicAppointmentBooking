@@ -58,6 +58,7 @@ def registerScreen (root):
         # Open Patient Menu and close Register screen
         newWind.withdraw()
         PatientMenu.patientMenuScreen(root, result[0][0])
+        conn.commit()
 
     def enterCallback(event):
         submitCallback()
@@ -72,7 +73,7 @@ def registerScreen (root):
 
     frame = tk.LabelFrame(newWind, text='New Patient Registration', padx=10, pady=10, font=("Verdana", 10), bg="#2C3A57", fg = "red")
     frame.grid(row=0, column=0, sticky='news')
-    radioFrame = tk.Frame (frame, padx=100, pady=10, bg="lightblue")
+    radioFrame = tk.Frame (frame, padx=100, pady=10, bg="#2C3A57")
 
 
 
@@ -86,7 +87,7 @@ def registerScreen (root):
     passBox = tk.Entry(frame, width=30, bg="#A3A3B1")
     
     confLabel = tk.Label(frame, text='Confirm Password: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
-    confBox = ttk.Entry(frame, width=30, bg="#A3A3B1")
+    confBox = tk.Entry(frame, width=30, bg="#A3A3B1")
     
     phoneLabel = tk.Label(frame, text='Phone Number: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
     phoneBox = tk.Entry(frame, width=30, bg="#A3A3B1")
@@ -95,15 +96,15 @@ def registerScreen (root):
     submit = HoverButton(frame, text='Submit', activebackground='#00BE00', font=("Bahnschrift", 9))
     
     addrLabel = tk.Label(frame, text='Address: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
-    addrBox = ttk.Entry(frame, width=30, bg="#A3A3B1")
+    addrBox = tk.Entry(frame, width=30, bg="#A3A3B1")
     
     dobLabel = tk.Label(frame, text='Select Date Of Birth: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
     dobselect = tkc.DateEntry (frame)
     
     genderLabel = tk.Label(frame, text='Gender: ', font=("Verdana", 9), bg="#2C3A57", fg="white")
-    maleRadio = ttk.Radiobutton (radioFrame, text='Male', variable=genderVar, value='MALE', bg="#A3A3B1")
-    femaleRadio = ttk.Radiobutton (radioFrame, text='Female', variable=genderVar, value='FEMALE', bg="#A3A3B1")
-    otherRadio = ttk.Radiobutton (radioFrame, text='Other', variable=genderVar, value='OTHER', bg="#A3A3B1")
+    maleRadio = tk.Radiobutton (radioFrame, text='Male', variable=genderVar, value='MALE', bg="#A3A3B1")
+    femaleRadio = tk.Radiobutton (radioFrame, text='Female', variable=genderVar, value='FEMALE', bg="#A3A3B1")
+    otherRadio = tk.Radiobutton (radioFrame, text='Other', variable=genderVar, value='OTHER', bg="#A3A3B1")
     
     submit = tk.Button(frame, text='Submit', command=submitCallback)
 

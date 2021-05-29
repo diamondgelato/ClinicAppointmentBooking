@@ -1,195 +1,358 @@
 import tkinter as tk
 from tkinter import ttk
 import calendar
+import sqlite3 as sql
+import datetime
+from button import HoverButton
 
+import ProgramVar as pv
 
-# def view():
-#     root1 = Tk()
-#     frame1 = Frame(root1)
-#     frame1.pack(side=tk.LEFT, padx=20)
-#     view1 = ttk.Treeview(frame1, columns=(1, 2, 3, 4, 5), show='headings', height='3')
-#     view1.pack()
-#     tree.column('size', width=100, anchor='center')
-#     tree.heading('size', text='Size')
-#     view1.heading(1, text='Appointment ID')
-#     view1.heading(2, text='Date')
-#     view1.heading(3, text='Time')
-#     view1.heading(4, text='Purpose')
-#     view1.heading(5, text='Status')
-#     root1.title('Appointment Data')
-#     root1.geometry('1300x1000')
-#     root1.mainloop()
+def editAppointment (root):
+    conn = sql.connect(pv.databasePath)
+    cur = conn.cursor()
 
-# def delete():
-#     root = tk.Tk()
-
-#     frame = tk.Frame(root, padx=20, pady=20, bg="lightblue")
-#     frame.grid(row=0, column=0, sticky='news')
-
-#     AppointmentIDLabel = tk.Label(frame, text='AppointmentID ')
-#     AppointmentIDBox = ttk.Entry(frame, width=30)
-#     AppointmentIDLabel.grid(row=1, column=0)
-#     AppointmentIDBox.grid(row=1, column=1)
-
-#     delete = tk.Button(frame, text='Delete')
-
-#     delete.grid(row=2, column=0, columnspan=2)
-
-#     root.rowconfigure(0, weight=1, minsize=200)
-#     root.columnconfigure(0, weight=1, minsize=300)
-#     frame.rowconfigure(1, weight=1)
-#     frame.columnconfigure(0, weight=1)
-
-#     root.mainloop()
-
-
-# def edit():
-#     import calendar
-#     import tkinter as tk
-#     from tkinter import ttk
-from src.button import HoverButton
-
-
-def getlist():
-    #Need to display all the timings and dates of the appointments which are left.
-    #dbconnection needed.
-    #Show it on the GUI
-    appointmentstaken=tk.LabelFrame(root, padx=10, pady=10, bg="cyan", text='Appointments of the Patient')
-    appointmentstaken.grid(row=1, column=0, sticky='news')
-    appointments=[("16/4/21", "10.30am"), ("12/4/21", "11.30am")] #db connectivity
-    r,r1=0,0
-    for date, time in appointments:
-        datelabel=tk.Label(appointmentstaken, text=date)
-        datelabel.grid(row=r, column=0)
-        timelabel=tk.Label(appointmentstaken, text=time)
-        timelabel.grid(row=r1, column=1)
-        r+=1
-        r1+=1
-        
-def ShowAppointment():
-    timeframe = tk.LabelFrame(root, padx=10, text="Timings available for the date")
-    timeframe.grid (row=3, column=0, sticky='news')
-    pt_id=patient_var.get()
+    appointmentInfo = []
     var=tk.IntVar()
-    patient_var.set(0)
-    times=[("10.30am", 0, "free", 0), ("11.00am", 1, "scheduled", 21032051),("11.30am",2, "scheduled", 21032053),("12.00pm",3,"free", 0),("12.30pm",4, "scheduled", 21032052) ]
-    i, index=0,0;
-    for time, val, state, p_id in times:
 
-        if(state=="scheduled" and pt_id!=p_id ): 
-            r=ttk.Radiobutton(timeframe, text=time, variable=var, width=20, padding=20, value=val, state= "disabled" )
-            r.grid(row=i, column=0)
-        else: 
-            r=ttk.Radiobutton(timeframe, text=time, variable=var, width=20, padding=20, value=val, command=lambda: print(var.get()), state= "normal")
-            status=ttk.Label(timeframe, text=state )
-            r.grid(row=i, column=0)
-            status.grid(row=i, column=1)
-            if(state=="scheduled"):
-                current=val
-                index=i
-            
-            
-
-        i+=1
-    save = ttk.Button(timeframe, text='Save', command=submission)
-    save.grid(row=13, column=0, columnspan=7)
-
-def submission():
-    #db connectivity
-    if(r!=val):
-        num=var.get()
-        times[index]=(time, val, "free", 0)
-        times[num]=(time, val, "scheduled", p_id)
-        #Add a information dialog box
+    # gets all the appointments which have the given date and patient ID
+    def fetchAppointment (date, id):
+        # print (date)
+        stringDate = '%' + str(date) + '%'
+        # print (stringDate)
         
+        query = "SELECT appointment.app_id, patient.patient_id, patient.first_name, patient.last_name, appointment.datetime, appointment.purpose FROM scheduled_app as sa INNER JOIN appointment ON appointment.app_id = sa.app_id INNER JOIN patient ON patient.patient_id = sa.patient_id WHERE appointment.datetime LIKE ? AND patient.patient_id = ?;"
+        cur.execute (query, (stringDate, id, ))
+
+        result = cur.fetchall()
+        # print (result)
+
+        listy = [0, 1, 2, 4, 5]
+        appointmentInfo = []
+
+        for row in result:
+            newrow = []
+            for x in listy:
+                if x == 2:
+                    newrow.append (str(row[2] + ' ' + row[3]))
+                else:
+                    newrow.append (row[x])
+
+            appointmentInfo.append(newrow)
+        
+        # print (appointmentInfo)
+        
+        # send back only date and time (separated into separate strings)
+        appointments = [tuple([x[0], x[3].split(' ')]) for x in appointmentInfo]
+
+        print (appointments)
+        return appointments
+
+        conn.commit ()
+
+
+
+    def fetchAppointmentByDate (date):
+        stringDate = '%' + str(date) + '%'
+
+        query = "SELECT appointment.app_id, appointment.datetime, appointment.status FROM appointment WHERE appointment.datetime LIKE ?;"
+
+        cur.execute (query, (stringDate, ))
+
+        result = cur.fetchall()
+        print (result)
+
+    # fetchAppointmentByDate (datetime.date.fromisoformat('2021-05-04'))
+
+
+
+    def fetchAppointmentByPatient (id):
+        query = "SELECT patient.patient_id, appointment.app_id, appointment.datetime, appointment.purpose FROM scheduled_app as sa INNER JOIN appointment ON appointment.app_id = sa.app_id INNER JOIN patient ON patient.patient_id = sa.patient_id WHERE patient.patient_id = ?;"
+        
+        cur.execute (query, (id, ))
+
+        result = cur.fetchall()
+
+        appointments = [tuple(x[2].split(' ')) for x in result]
+        return appointments
+
+    # fetchAppointmentByDate (1)
+    # fetchAppointment (datetime.date.fromisoformat('2021-05-04'), 1)
+    
+
+
+    # updates the given appointment ID to the datetime given by newdatetime 
+    def updateAppointment (app_id, newdatetime):
+        query = 'UPDATE appointment SET datetime = ? WHERE app_id = ?'
+        stringDate = str(newdatetime)
+
+        cur.execute (query, (stringDate, app_id))
+        result = cur.fetchall ()
+        print (result)
+        print ('Record updated to date time', stringDate)
+
+        conn.commit ()
+
+
+
+    def getBlockedAppointment (date):
+        # database connection: get all scheduled appointments for the day
+        # date = date.split(',')[0]
+        query = 'SELECT datetime FROM appointment WHERE status = "scheduled"'
+        cur.execute (query)
+        allBlocked = cur.fetchall()
+        times = []
+        counter = 0
+
+        # add all the times that are blocked, to the times wala list
+        for app in allBlocked:
+            # print (app[0], date)
+            if date in app[0]:
+
+                times.append ((app[0].split(' ')[1], counter, "scheduled"))
+                counter+=1
+
+        # add the rest of the times as free to times wala list
+        alltimes = ['10:30:00', '11:00:00', '11:30:00', '12:00:00', '12:30:00']
+
+        for t in alltimes:
+            flag = 0
+
+            for l in times:
+                if t in l[0]: 
+                    flag = 1
+
+            if flag == 0:
+                times.append ((t, counter, "free"))
+                counter+=1
+
+        times.sort (key = lambda x: x[0])
+        # print (times)
+        return times
+
+
+
+    #Scrolling option 
+    def getlist():
+        # Need to display all the timings and dates of the appointments which have been taken by the patient
+
+        # dbconnection needed.
+        # Show it on the GUI
+        appointmentstaken=tk.LabelFrame(window, padx=10, pady=10, bg="#2C3A57", fg="red", font=("Verdana", 10), text='Appointments of the Patient')
+        appointmentstaken.grid(row=1, column=0, sticky='news')
+
+        id = int(PatientIDBox.get())
+
+        # db connectivity (use def fetchAppointmentByPatient)
+        appointments = fetchAppointmentByPatient(id)
+        # appointments=[("16/4/21", "10.30am"), ("12/4/21", "11.30am")] 
+
+        r,r1=0,0
+        for date, time in appointments:
+            datelabel=tk.Label(appointmentstaken, text=date, bg="#2C3A57", fg="white", font=("Verdana", 9))
+            datelabel.grid(row=r, column=0)
+            timelabel=tk.Label(appointmentstaken, text=time, bg="#2C3A57", fg="white", font=("Verdana", 9))
+            timelabel.grid(row=r1, column=1)
+            r+=1
+            r1+=1
+
+
+
+    def ShowAppointment(date):
+        timeframe = tk.LabelFrame(window, padx=10, font=("Verdana", 10), text="Timings available for the date", bg="#a3a3b1")
+        timeframe.grid (row=3, column=0, sticky='news')
+        # pt_id=patient_var.get()
+
+        # use def fetchAppointmentByDate
+        print (date)
+        times = getBlockedAppointment (date.isoformat())
+        # print(times)
+        
+        i, index=0,0
+        for time, val, state in times:
+
+            if(state=="scheduled"): 
+                r=tk.Radiobutton(timeframe, text=time, variable=var, width=20, value=val, state= "disabled", bg = "#a3a3b1", font=("Verdana", 9))
+                r.grid(row=i, column=0)
+                present=val
+            else: 
+                r=tk.Radiobutton(timeframe, text=time, variable=var, width=20, value=val, command=lambda: print(var.get()), state= "normal", bg = "#a3a3b1", font=("Verdana", 9))
+                status=tk.Label(timeframe, text=state, bg = "#a3a3b1", font=("Verdana", 9))
+                r.grid(row=i, column=0)
+                status.grid(row=i, column=1)
+                if(state=="scheduled"):
+                    current=val
+                    index=i
+                
                 
 
+            i+=1
+        save = HoverButton(timeframe, text='Save', command=lambda: submission(times[var.get() - 1][0], date), activebackground='#00BE00', font=("Bahnschrift", 9))
+        save.grid(row=13, column=0, columnspan=7)
 
 
-    # Getting calendar related data
-    # monday = 0
-firstday = calendar.weekday(2021, 4, 1)
 
-calobj = calendar.Calendar(firstweekday=firstday)
-calobj = calendar.Calendar()
+    # time - string, date - datetime object
+    def submission(newtime, date):
+        #db connectivity
+        print ('in submission')
+        print (date, newtime)
+        id = PatientIDBox.get()
 
-monthiter = calobj.itermonthdays4(2021, 4)
-monthiter1 = monthiter
-currentmonth = 4
+        appointment = fetchAppointment(date, id)
+        print (appointment)
 
-days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        # update value of datetime only if there has been a change in it
+        if (appointment[0][1] != newtime):
+            print ("different time")
+            # then Add a alert dialog box
+            conf = False
+            msg = tk.messagebox.askquestion ("Confirm", "Confirm changes to appointment?")
+
+            if msg == 'yes':
+                # after dialog box confirmation
+                stringDate = date.isoformat() + ' ' + newtime
+                updateAppointment (appointment[0][0], stringDate)
+                # print (appointment[0][0], stringDate)
+                
+                # update into appointments value of datetime (so stupid to add a new entry, I wonder who would do that)
+                
+                window.destroy()
+            else:
+                pass
+        else:
+            print ("same time")
+            
+
+        # Getting calendar related data
+        # monday = 0
+    
+
+
+    # creates widgets for the calendar
+    def cal(year, month):
+        firstday = calendar.weekday(year, month, 1)
+
+        calobj = calendar.Calendar(firstweekday=firstday)
+        calobj = calendar.Calendar()
+
+        monthiter = calobj.itermonthdays4(year, month) 
+        monthiter1 = monthiter
+        currentmonth = month
+
+        # Prints weekday names 
+        for d in range(len(days)):
+            dayLabel = tk.Label (frame2, text=days[d], width=5, font=("Verdana", 9), bg = "#a3a3b1")
+            dayLabel.grid (row=3, column=d)
+
+        r = 4           # row of the calendar
+        c = 0           # column of the calendar
+        val1=""
+
+        # Number Buttons in Calendar
+        for day in monthiter:
+            # day = next(monthiter)
+            if (day[3] == 0):
+                r+=1 
+                c = 0
+
+            # app=str(day[2])+"/"+str(day[1])+"/"+str(day[0])+","+days[day[3]]
+            app = datetime.date(day[0], day[1], day[2])
+            # print(app)
+            dayButton = HoverButton(frame2, text=day[2], width=5, command=lambda app= app:ShowAppointment(app),activebackground='#00BE00', font=("Bahnschrift", 9)) 
+            dayButton.grid (row=r, column=c)
+            c+=1
+        
+        # Previous and Next Button
+        if(month==1):
+            prev=HoverButton(frame2, text="Previous", width=10, command=lambda c= c:cal(year-1, 12), activebackground='#00BE00', font=("Bahnschrift", 9)) 
+            
+        else:
+            prev=HoverButton(frame2, text="Previous", width=10, command=lambda c= c:cal(year, month-1), activebackground='#00BE00', font=("Bahnschrift", 9))
+            
+        if(month==12):
+            nextm=HoverButton(frame2, text="Next", width=10, command=lambda c= c:cal(year+1, 1), activebackground='#00BE00', font=("Bahnschrift", 9))
+        else:
+            nextm=HoverButton(frame2, text="Next", width=10, command=lambda c= c:cal(year, month+1), activebackground='#00BE00', font=("Bahnschrift", 9))
+        
+        prev.grid(row=0, column=0)
+        nextm.grid(row=0, column=6)
+        yearnmonth1=tk.Label(frame2, text="Month: "+str(months[month-1]), width=10, font=("Verdana", 9), bg = "#a3a3b1")
+        yearnmonth1.grid(row=0, column=3)
+        yearnmonth2=tk.Label(frame2, text="Year: "+str(year), width=10, font=("Verdana", 9), bg = "#a3a3b1")
+        yearnmonth2.grid(row=1, column=3)
+
+
+
+    days = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
+    months=['January', 'February', 'March', 'April', 'May','June','July','August','September','October','November','December']
+    present=0;
 
     # Building GUI
-root = tk.Tk()
-patient_var=tk.IntVar()
-    #Frame to enter the Patient ID whose appointment needs to be edited
-frame = tk.LabelFrame(root, bg="#2C3A57",text='Update records')
-frame.grid(row=0, column=0, sticky='news') #frame 1
-PatientID = tk.Label(frame, text='PatientID ', font=("Verdana", 10), bg="#2C3A57", fg="red")
-PatientIDBox = tk.Entry(frame, width=30, textvariable= patient_var, bg = "#A3A3B1")
-PatientID.grid(row=0, column=0)
-PatientIDBox.grid(row=0, column=1)
-# PatientID.pack()
-# PatientIDBox.pack()
-ShowappBox=HoverButton(frame, text='View the appointments', command=getlist)
+    # root = tk.Tk()
+    window=tk.Toplevel(root)
+    window.title("Edit Appointments")
 
-ShowappBox.grid(row=0, column=2, columnspan=2)
-#appointmenttaken frame 2
-frame2 = tk.Frame(root, padx=10, pady=10, bg="white")
-frame2.grid(row=2, column=0, sticky='news') #frame 3
-#timeframe frame 4
+    patient_var=tk.IntVar()
+        #Frame to enter the Patient ID whose appointment needs to be edited
+    frame = tk.LabelFrame(window, bg="#2C3A57", fg="white", text='Update appointments')
+    frame.grid(row=0, column=0, sticky='news') #frame 1
 
+    PatientID = tk.Label(frame, text='PatientID', bg="#2C3A57", fg="white")
+    PatientIDBox = tk.Entry(frame, width=10, textvariable= patient_var, bg = "#A3A3B1")
 
-for d in range(len(days)):
-    dayLabel = tk.Label(frame2, text=days[d], width=5, font=("Verdana", 10), bg="#2C3A57", fg="red")
-    dayLabel.grid(row=3, column=d)
+    PatientID.grid(row=0, column=0)
+    PatientIDBox.grid(row=0, column=1)
 
-r = 4  # row of the calendar
-c = 0  # column of the calendar
-for day in monthiter:
-        # day = next(monthiter)
-    if (day[3] == 0):
-        r += 1
-        c = 0
+    ShowappBox=HoverButton(frame, text='View the appointments', command=getlist, activebackground='#00BE00', font=("Bahnschrift", 9))
+    ShowappBox.grid(row=1, column=0, columnspan=2)
 
-    dayButton = tk.Button(frame2, text=day[2], width=5, command=ShowAppointment)
-    dayButton.grid(row=r, column=c)
-    c += 1
+    #appointmenttaken frame 2
+    frame2 = tk.Frame(window, padx=10, pady=10, bg="#a3a3b1")
+    frame2.grid(row=2, column=0, sticky='news') #frame 3
+    #timeframe frame 4
 
-root.rowconfigure(0, weight=1)
-root.columnconfigure(0, weight=1)
+    year=2021
+    month=4
+    cal(2021, 4)
 
-frame.rowconfigure(0, weight=1)
-frame.columnconfigure(0, weight=1)
-frame.columnconfigure(1, weight=1)
-frame.columnconfigure(2, weight=1)
+    window.rowconfigure(0, weight=1)
+    window.columnconfigure(0, weight=1)
 
-frame2.rowconfigure(0, weight=1)
-frame2.rowconfigure(1, weight=1)
-frame2.rowconfigure(2, weight=1)
-frame2.rowconfigure(3, weight=1)
-frame2.rowconfigure(4, weight=1)
-frame2.rowconfigure(5, weight=1)
-frame2.rowconfigure(6, weight=1)
-frame2.rowconfigure(7, weight=1)
-frame2.rowconfigure(8, weight=1)
-frame2.rowconfigure(9, weight=1)
-frame2.rowconfigure(10, weight=1)
-frame2.rowconfigure(11, weight=1)
-frame2.rowconfigure(12, weight=1)
+    frame.rowconfigure(0, weight=1)
+    frame.rowconfigure(1, weight=1)
+    # frame.rowconfigure(2, weight=1)
+    frame.columnconfigure(0, weight=1)
+    frame.columnconfigure(1, weight=1)
+    # frame.columnconfigure(2, weight=1)
 
-frame2.columnconfigure(0, weight=1)
-frame2.columnconfigure(1, weight=1)
-frame2.columnconfigure(2, weight=1)
-frame2.columnconfigure(3, weight=1)
-frame2.columnconfigure(4, weight=1)
-frame2.columnconfigure(5, weight=1)
-frame2.columnconfigure(6, weight=1)
+    frame2.rowconfigure(0, weight=1)
+    frame2.rowconfigure(1, weight=1)
+    frame2.rowconfigure(2, weight=1)
+    frame2.rowconfigure(3, weight=1)
+    frame2.rowconfigure(4, weight=1)
+    frame2.rowconfigure(5, weight=1)
+    frame2.rowconfigure(6, weight=1)
+    frame2.rowconfigure(7, weight=1)
+    frame2.rowconfigure(8, weight=1)
+    frame2.rowconfigure(9, weight=1)
+    frame2.rowconfigure(10, weight=1)
+    frame2.rowconfigure(11, weight=1)
+    frame2.rowconfigure(12, weight=1)
 
-root.title('Edit Appointments')
-root.geometry("400x500+10+20")
-root.mainloop()
+    frame2.columnconfigure(0, weight=1)
+    frame2.columnconfigure(1, weight=1)
+    frame2.columnconfigure(2, weight=1)
+    frame2.columnconfigure(3, weight=1)
+    frame2.columnconfigure(4, weight=1)
+    frame2.columnconfigure(5, weight=1)
+    frame2.columnconfigure(6, weight=1)
 
+    # root.title('Edit Appointments')
+    # root.geometry("600x750+10+20")
+    # root.mainloop()
 
-# view()
-# delete()
+    # conn.commit()
+    # conn.close()
+
+    # view()
+    # delete()

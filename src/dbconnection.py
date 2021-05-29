@@ -1,9 +1,11 @@
 import sqlite3 as sql
 
-conn = sql.connect(r'C:\Users\ashuk\Documents\Semester 4\Mini Project\ClinicAppointmentBooking\data.db')
+import ProgramVar as pv
+
+conn = sql.connect(pv.databasePath)
 cur = conn.cursor()
 
-query = "SELECT * FROM doctor"
+query = "SELECT * FROM patient"
 cur.execute (query)
 print (cur.fetchall())
 
