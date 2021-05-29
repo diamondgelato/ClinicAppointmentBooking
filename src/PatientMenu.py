@@ -22,6 +22,7 @@ def patientMenuScreen (root, id):
     query = "SELECT * FROM patient WHERE patient_id = ?"
     cur.execute (query, (id, ))
     result = cur.fetchall()
+    nameString = 'Patient Name: ' + result[0][1] + ' ' + result[0][2]
 
     conn.commit()
     conn.close()

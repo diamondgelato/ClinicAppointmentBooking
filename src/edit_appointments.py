@@ -3,6 +3,7 @@ from tkinter import ttk
 import calendar
 import sqlite3 as sql
 import datetime
+from button import HoverButton
 
 import ProgramVar as pv
 
@@ -147,9 +148,9 @@ def editAppointment (root):
 
         r,r1=0,0
         for date, time in appointments:
-            datelabel=tk.Label(appointmentstaken, text=date, fg="white", bg="#2C3A57")
+            datelabel=tk.Label(appointmentstaken, text=date, bg="#2C3A57", fg="white", font=("Verdana", 9))
             datelabel.grid(row=r, column=0)
-            timelabel=tk.Label(appointmentstaken, text=time, fg="white", bg="#2C3A57")
+            timelabel=tk.Label(appointmentstaken, text=time, bg="#2C3A57", fg="white", font=("Verdana", 9))
             timelabel.grid(row=r1, column=1)
             r+=1
             r1+=1
@@ -157,7 +158,7 @@ def editAppointment (root):
 
 
     def ShowAppointment(date):
-        timeframe = tk.LabelFrame(window, padx=10, font=("Verdana", 10), text="Timings available for the date")
+        timeframe = tk.LabelFrame(window, padx=10, font=("Verdana", 10), text="Timings available for the date", bg="#a3a3b1")
         timeframe.grid (row=3, column=0, sticky='news')
         # pt_id=patient_var.get()
 
@@ -165,19 +166,17 @@ def editAppointment (root):
         print (date)
         times = getBlockedAppointment (date.isoformat())
         # print(times)
-
-        # times=[("10.30am", 0, "free", 0), ("11.00am", 1, "scheduled", 21032051),("11.30am",2, "scheduled", 21032053),("12.00pm",3,"free", 0),("12.30pm",4, "scheduled", 21032052) ]
         
         i, index=0,0
         for time, val, state in times:
 
             if(state=="scheduled"): 
-                r=ttk.Radiobutton(timeframe, text=time, variable=var, width=20, padding=20, value=val, state= "disabled" )
+                r=tk.Radiobutton(timeframe, text=time, variable=var, width=20, value=val, state= "disabled", bg = "#a3a3b1", font=("Verdana", 9))
                 r.grid(row=i, column=0)
                 present=val
             else: 
-                r=ttk.Radiobutton(timeframe, text=time, variable=var, width=20, padding=20, value=val, command=lambda: print(var.get()), state= "normal")
-                status=ttk.Label(timeframe, text=state)
+                r=tk.Radiobutton(timeframe, text=time, variable=var, width=20, value=val, command=lambda: print(var.get()), state= "normal", bg = "#a3a3b1", font=("Verdana", 9))
+                status=tk.Label(timeframe, text=state, bg = "#a3a3b1", font=("Verdana", 9))
                 r.grid(row=i, column=0)
                 status.grid(row=i, column=1)
                 if(state=="scheduled"):
@@ -187,7 +186,7 @@ def editAppointment (root):
                 
 
             i+=1
-        save = ttk.Button(timeframe, text='Save', command=lambda: submission(times[var.get() - 1][0], date))
+        save = HoverButton(timeframe, text='Save', command=lambda: submission(times[var.get() - 1][0], date), activebackground='#00BE00', font=("Bahnschrift", 9))
         save.grid(row=13, column=0, columnspan=7)
 
 
@@ -242,7 +241,7 @@ def editAppointment (root):
 
         # Prints weekday names 
         for d in range(len(days)):
-            dayLabel = tk.Label (frame2, text=days[d], width=5)
+            dayLabel = tk.Label (frame2, text=days[d], width=5, font=("Verdana", 9), bg = "#a3a3b1")
             dayLabel.grid (row=3, column=d)
 
         r = 4           # row of the calendar
@@ -259,27 +258,27 @@ def editAppointment (root):
             # app=str(day[2])+"/"+str(day[1])+"/"+str(day[0])+","+days[day[3]]
             app = datetime.date(day[0], day[1], day[2])
             # print(app)
-            dayButton = ttk.Button(frame2, text=day[2], width=5, command=lambda app= app:ShowAppointment(app)) 
+            dayButton = HoverButton(frame2, text=day[2], width=5, command=lambda app= app:ShowAppointment(app),activebackground='#00BE00', font=("Bahnschrift", 9)) 
             dayButton.grid (row=r, column=c)
             c+=1
         
         # Previous and Next Button
         if(month==1):
-            prev=ttk.Button(frame2, text="Previous", width=10, command=lambda c= c:cal(year-1, 12)) 
+            prev=HoverButton(frame2, text="Previous", width=10, command=lambda c= c:cal(year-1, 12), activebackground='#00BE00', font=("Bahnschrift", 9)) 
             
         else:
-            prev=ttk.Button(frame2, text="Previous", width=10, command=lambda c= c:cal(year, month-1) )
+            prev=HoverButton(frame2, text="Previous", width=10, command=lambda c= c:cal(year, month-1), activebackground='#00BE00', font=("Bahnschrift", 9))
             
         if(month==12):
-            nextm=ttk.Button(frame2, text="Next", width=10, command=lambda c= c:cal(year+1, 1))
+            nextm=HoverButton(frame2, text="Next", width=10, command=lambda c= c:cal(year+1, 1), activebackground='#00BE00', font=("Bahnschrift", 9))
         else:
-            nextm=ttk.Button(frame2, text="Next", width=10, command=lambda c= c:cal(year, month+1))
+            nextm=HoverButton(frame2, text="Next", width=10, command=lambda c= c:cal(year, month+1), activebackground='#00BE00', font=("Bahnschrift", 9))
         
         prev.grid(row=0, column=0)
         nextm.grid(row=0, column=6)
-        yearnmonth1=tk.Label(frame2, text="Month: "+str(months[month-1]), width=10)
+        yearnmonth1=tk.Label(frame2, text="Month: "+str(months[month-1]), width=10, font=("Verdana", 9), bg = "#a3a3b1")
         yearnmonth1.grid(row=0, column=3)
-        yearnmonth2=tk.Label(frame2, text="Year: "+str(year), width=10)
+        yearnmonth2=tk.Label(frame2, text="Year: "+str(year), width=10, font=("Verdana", 9), bg = "#a3a3b1")
         yearnmonth2.grid(row=1, column=3)
 
 
@@ -299,16 +298,16 @@ def editAppointment (root):
     frame.grid(row=0, column=0, sticky='news') #frame 1
 
     PatientID = tk.Label(frame, text='PatientID', bg="#2C3A57", fg="white")
-    PatientIDBox = tk.Entry(frame, width=10, textvariable= patient_var)
+    PatientIDBox = tk.Entry(frame, width=10, textvariable= patient_var, bg = "#A3A3B1")
 
     PatientID.grid(row=0, column=0)
     PatientIDBox.grid(row=0, column=1)
 
-    ShowappBox=ttk.Button(frame, text='View the appointments', command=getlist)
+    ShowappBox=HoverButton(frame, text='View the appointments', command=getlist, activebackground='#00BE00', font=("Bahnschrift", 9))
     ShowappBox.grid(row=1, column=0, columnspan=2)
 
     #appointmenttaken frame 2
-    frame2 = tk.Frame(window, padx=10, pady=10, bg="white")
+    frame2 = tk.Frame(window, padx=10, pady=10, bg="#a3a3b1")
     frame2.grid(row=2, column=0, sticky='news') #frame 3
     #timeframe frame 4
 

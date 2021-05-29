@@ -32,6 +32,20 @@ def AdminReportScreen (root):
         #          JOIN patient ON patient.patient_id = patient_report.patient_id
         #          WHERE report.date = ?;'
 
+        frame1 = tk.LabelFrame (window, padx=10, pady=10, bg="#2C3A57", text='View the Reports', foreground="red", font = ("Verdana", 10))
+        frame1.grid(row=1, column=0, sticky='wnse')
+        frame1.columnconfigure(0, weight=1)
+        frame1.columnconfigure(1, weight=1)
+        frame1.columnconfigure(2, weight=1)
+        frame1.columnconfigure(3, weight=1)
+        frame1.columnconfigure(4, weight=1)
+
+        view1 = ttk.Treeview(frame1, columns=(1, 2, 3, 4), show='headings', height='5')
+        view1.grid(row=0,column=0, sticky='ew')
+        sideframe=tk.Frame(window, padx=10, pady=10, bg="#2C3A57")
+        sideframe.grid(row=1, column=1, sticky='enws')
+        sideframe.columnconfigure(0, weight=0)
+
         try:
             query = 'SELECT report.report_id, patient_report.patient_id, patient.first_name, patient.last_name, report.name, report.file FROM report JOIN patient_report ON report.report_id = patient_report.report_id JOIN patient ON patient.patient_id = patient_report.patient_id WHERE report.date = ?;'
             date = date_select.get_date().isoformat()
@@ -51,18 +65,27 @@ def AdminReportScreen (root):
 
         #Add the loop here! for the date entry and printing the result
         count=0
-        for record in result:
-            name=record[2]+" "+record[3]
-            view1.insert(frame1, index='end', iid=count, text="", values=(record[0], record[1], name, record[4]))
-            count+=1
-        
-        count=0
-        for rec in result:
+        if len(result) > 0:
+            for record in result:
+                name=record[2]+" "+record[3]
+                view1.insert('', index='end', iid=count, text="", values=(record[0], record[1], name, record[4]))
+                count+=1
             
-            action=tk.Button(sideframe, text="View", width='15', command=lambda rec:fileopen(rec[5]))
-            action.grid(row=count, column=0)
-            count+=1
+            blank=tk.Label(sideframe, text='',background="#2C3A57", fg = "white")
+            blank.grid(row=0,column=0)
+            count=1
+            
+            for rec in result:
+                action=HoverButton(sideframe, text="View", width='10', command=lambda rec=rec:fileopen(rec[5]), activebackground='#00BE00', font=("Bahnschrift", 9))
+                action.grid(row=count, column=0)
+                count+=1
+        else:
+            print ("No records found")
 
+        view1.column(1, width=400)
+        view1.column(2, width=400)
+        view1.column(3, width=400)
+        view1.column(4, width=400)
 
             
 
@@ -74,6 +97,20 @@ def AdminReportScreen (root):
         # JOIN patient_report ON report.report_id = patient_report.report_id
         # JOIN patient ON patient.patient_id = patient_report.patient_id
         # WHERE patient_report.patient_id = ?;'
+        frame1 = tk.LabelFrame (window, padx=10, pady=10, bg="#2C3A57", text='View the Reports', foreground="red", font = ("Verdana", 10))
+        frame1.grid(row=1, column=0, sticky='wnse')
+        frame1.columnconfigure(0, weight=1)
+        frame1.columnconfigure(1, weight=1)
+        frame1.columnconfigure(2, weight=1)
+        frame1.columnconfigure(3, weight=1)
+        frame1.columnconfigure(4, weight=1)
+
+        view1 = ttk.Treeview(frame1, columns=(1, 2, 3, 4), show='headings', height='5')
+        view1.grid(row=0,column=0, sticky='ew')
+        
+        sideframe=tk.Frame(window, padx=10, pady=10, bg="#2C3A57")
+        sideframe.grid(row=1, column=1, sticky='wens')
+        sideframe.columnconfigure(0, weight=0)
 
         try:
             query = 'SELECT report.report_id, report.date, patient.first_name, patient.last_name, report.name, report.file FROM report JOIN patient_report ON report.report_id = patient_report.report_id JOIN patient ON patient.patient_id = patient_report.patient_id WHERE patient_report.patient_id = ?;'
@@ -88,7 +125,11 @@ def AdminReportScreen (root):
             conn.commit()
         except Exception as e:
             print(e)
-        view1.column(1, width=15)
+
+        view1.column(1, width=400)
+        view1.column(2, width=400)
+        view1.column(3, width=400)
+        view1.column(4, width=400)
         view1.heading(1, text='Report ID')
         view1.heading(2, text='Date')
         view1.heading(3, text='Patient Name')
@@ -100,9 +141,12 @@ def AdminReportScreen (root):
             view1.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], name, record[4]))
             count+=1
         
-        count=0
+        blank=tk.Label(sideframe, text='', background="#2C3A57", fg = 'white')
+        blank.grid(row=0,column=0)
+        
+        count=1
         for rec in result:
-            action=tk.Button(sideframe, text="View", width='15', command=lambda:fileopen(rec[5]))
+            action=HoverButton(sideframe, text="View", width='10', command=lambda rec=rec:fileopen(rec[5]), activebackground='#00BE00', font=("Bahnschrift", 9))
             action.grid(row=count, column=0)
             count+=1
 
@@ -111,48 +155,33 @@ def AdminReportScreen (root):
 
     # root=tk.Tk() #toplevel change
     window=tk.Toplevel(root)
-    frame = tk.LabelFrame (window, padx=10, pady=10, bg="lightblue", text='Enter the details to view reports')
+    frame = tk.LabelFrame (window, padx=10, pady=10, bg="#2C3A57", text='Enter the details to view reports', foreground="red", font = ("Verdana", 10))
     frame.grid(row=0, column=0, sticky='news', columnspan=2)
-    frame1 = tk.LabelFrame (window, padx=10, pady=10, bg="white", text='View the Reports')
-    frame1.grid(row=1, column=0, sticky='wns')
-    sideframe=tk.Frame(window, padx=10, pady=10, bg="blue")
-    sideframe.grid(row=1, column=1, sticky='ens')
 
     window.rowconfigure(0, weight=1)
-    window.columnconfigure(0, weight=1)
     window.rowconfigure(1, weight=1)
+    window.columnconfigure(0, weight=3)
     window.columnconfigure(1, weight=1)
     frame.rowconfigure(0, weight=1)
     frame.rowconfigure(1, weight=1)
     frame.rowconfigure(2, weight=1)
     frame.columnconfigure(0, weight=1)
     frame.columnconfigure(1, weight=1)
-    frame.columnconfigure(2, weight=1)
-
-    frame1.columnconfigure(0, weight=1)
-    frame1.columnconfigure(1, weight=1)
-    frame1.columnconfigure(2, weight=1)
-    frame1.columnconfigure(3, weight=1)
-    frame1.columnconfigure(4, weight=1)
-
-    sideframe.columnconfigure(0, weight=0)
-
-    view1 = ttk.Treeview(frame1, columns=(1, 2, 3, 4), show='headings', height='3')
-    view1.grid(row=0,column=0, sticky='ew')
+    frame.columnconfigure(2, weight=1) 
 
     pt_id=tk.IntVar()
-    date_label=tk.Label(frame, text="Select the date: ")
+    date_label=tk.Label(frame, text="Select the date: ", font=("Verdana", 9), bg = "#2C3A57", fg = "white")
     date_select=tkc.DateEntry(frame)
     date_label.grid(row=0, column =0)
     date_select.grid(row=0, column=1)
-    submit = ttk.Button(frame, text='View', command=view_date) #onClick=sub(date,time)
+    submit = HoverButton(frame, text='View', command=view_date, activebackground='#00BE00', font=("Bahnschrift", 9)) #onClick=sub(date,time)
     submit.grid(row=0, column=2)
 
-    id_label=tk.Label(frame, text="Enter the Patient ID: ")
-    id_select=tk.Entry(frame, width=30, textvariable=pt_id )
+    id_label=tk.Label(frame, text="Enter the Patient ID: ", font=("Verdana", 9), bg = "#2C3A57", fg = "white")
+    id_select=tk.Entry(frame, width=30, textvariable=pt_id, bg = "#A3A3B1")
     id_label.grid(row=1, column =0)
     id_select.grid(row=1, column=1)
-    submit = ttk.Button(frame, text='View Patient\'s Reports', command=view_patient) #onClick=sub(date,time)
+    submit = HoverButton(frame, text='View Patient\'s Reports', command=view_patient, activebackground='#00BE00', font=("Bahnschrift", 9)) #onClick=sub(date,time)
     submit.grid(row=1, column=2)
 
     # window.mainloop()
@@ -160,6 +189,6 @@ def AdminReportScreen (root):
 
 
 
-root=tk.Tk()
-AdminReportScreen(root)
-root.mainloop()
+# root=tk.Tk()
+# AdminReportScreen(root)
+# root.mainloop()
