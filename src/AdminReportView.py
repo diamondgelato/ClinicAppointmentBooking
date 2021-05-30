@@ -2,7 +2,6 @@
 # a file explorer in Tkinter
 # import all components
 # from the tkinter library
-
 import tkinter as tk
 from tkinter import Label, Button
 from tkinter import ttk
@@ -134,7 +133,7 @@ def AdminReportScreen (root):
         view1.heading(2, text='Date')
         view1.heading(3, text='Patient Name')
         view1.heading(4, text='Name of the Report')
-        # view1.heading(5, text='Click here to view')
+        # view1.heading(5, text='')
         count=0
         for record in result:
             name=record[2]+" "+record[3]
@@ -162,6 +161,7 @@ def AdminReportScreen (root):
     window.rowconfigure(1, weight=1)
     window.columnconfigure(0, weight=3)
     window.columnconfigure(1, weight=1)
+    window.geometry("920x400") #for presentation, might have to change the configuration
     frame.rowconfigure(0, weight=1)
     frame.rowconfigure(1, weight=1)
     frame.rowconfigure(2, weight=1)

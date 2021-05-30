@@ -13,6 +13,8 @@ def editAppointment (root):
 
     appointmentInfo = []
     var=tk.IntVar()
+    global no_of_scheduled
+    no_of_scheduled=0
 
     # gets all the appointments which have the given date and patient ID
     def fetchAppointment (date, id):
@@ -112,7 +114,10 @@ def editAppointment (root):
                 counter+=1
 
         # add the rest of the times as free to times wala list
-        alltimes = ['10:30:00', '11:00:00', '11:30:00', '12:00:00', '12:30:00']
+        global no_of_scheduled
+        no_of_scheduled=counter
+
+        alltimes = ['10:30:00', '10:45:00', '11:00:00', '11:30:00', '12:00:00', '12:30:00']
 
         for t in alltimes:
             flag = 0
@@ -165,7 +170,7 @@ def editAppointment (root):
         # use def fetchAppointmentByDate
         print (date)
         times = getBlockedAppointment (date.isoformat())
-        # print(times)
+        print(times)
         
         i, index=0,0
         for time, val, state in times:
@@ -186,15 +191,18 @@ def editAppointment (root):
                 
 
             i+=1
-        save = HoverButton(timeframe, text='Save', command=lambda: submission(times[var.get() - 1][0], date), activebackground='#00BE00', font=("Bahnschrift", 9))
+        save = HoverButton(timeframe, text='Save', command=lambda: submission(times[var.get()-no_of_scheduled+1][0], date), activebackground='#00BE00', font=("Bahnschrift", 9))
         save.grid(row=13, column=0, columnspan=7)
 
 
 
+ 
     # time - string, date - datetime object
     def submission(newtime, date):
         #db connectivity
+
         print ('in submission')
+        print(no_of_scheduled)
         print (date, newtime)
         id = PatientIDBox.get()
 
@@ -313,7 +321,7 @@ def editAppointment (root):
 
     year=2021
     month=4
-    cal(2021, 4)
+    cal(2021, 5)
 
     window.rowconfigure(0, weight=1)
     window.columnconfigure(0, weight=1)

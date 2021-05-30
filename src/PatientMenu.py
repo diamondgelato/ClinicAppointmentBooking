@@ -26,7 +26,7 @@ def patientMenuScreen (root, id):
 
     conn.commit()
     conn.close()
-
+    nameString=result[0][1]+" "+result[0][2]
     newWind = tk.Toplevel(root, )
 
     frame = tk.Frame (newWind, padx=20, pady=20, bg="#2C3A57")

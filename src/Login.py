@@ -45,20 +45,22 @@ def loginScreen ():
             query = "SELECT * FROM admin WHERE username = ?"
             cur.execute (query, (username, ))
             result = cur.fetchall ()
+            print(result)
             isAdmin = 1
             passCol = 2
             print ('checking admin table')
 
         if (result[0][passCol] == password):
             if (isAdmin == 1):
-                print ('Openign admin menu')
+                print ('Opening admin menu')
                 root.withdraw()
                 uName.delete(0, 'end')
                 passwordBox.delete(0, 'end')
-                notification("2021-05-29 04:30:00",0, 1) #random datetime string sent
                 AdminMenu.adminMenuScreen (root, result[0][0])
+                 
+                
             if (isAdmin == 0):
-                print ('Openign patient menu')
+                print ('Opening patient menu')
                 root.withdraw()
                 uName.delete(0, 'end')
                 passwordBox.delete(0, 'end')

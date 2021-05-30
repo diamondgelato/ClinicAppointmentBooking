@@ -21,10 +21,11 @@ def Book_Appointment(root, id):
     def addAppointmentDB (doctor, purpose, date, time):
         date = date.split(',')[0]
         now=datetime.datetime.now()
-        date1 = datetime.date.fromisoformat (date)
-        time = time[:-2]
-        time = datetime.time.fromisoformat (time)
-        
+        date1 = datetime.date.fromisoformat(date)
+        # time = time[:-2] #To remove am/pm from the string
+        print(time)
+        time = datetime.time.fromisoformat(time)
+        print(time)
         # add to appointment table
         dbtime = datetime.datetime.combine (date1, time)
         params = (str(dbtime), purpose, 'scheduled')
@@ -67,7 +68,7 @@ def Book_Appointment(root, id):
                 counter+=1
 
         # add the rest of the times as free to times wala list
-        alltimes = ['10:30', '11:00', '11:30', '12:00', '12:30']
+        alltimes = ['10:30', '10:45', '11:00', '11:30', '12:00', '12:30']
 
         for t in alltimes:
             flag = 0
@@ -126,7 +127,7 @@ def Book_Appointment(root, id):
             pur=purpose_var.get()
             t=time.get()
             date_selected=date
-            times=["10:30am", "11:00am","11:30am","12:00pm","12:30pm"]
+            times=["10:30", "10:45", "11:00","11:30","12:00","12:30"]
             #only presentation will have to add new appointment timings
 
             var1= "Date: "+date_selected +"\nTime: "+times[t]+"\nDoctor: "+doc+"\nPurpose: "+pur
@@ -295,4 +296,7 @@ def Book_Appointment(root, id):
     conn.commit()
     conn.close()
 
-# Book_Appointment()
+# root=tk.Tk()
+# Book_Appointment(root,1)
+# root.mainloop()
+

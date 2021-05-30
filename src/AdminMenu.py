@@ -5,6 +5,7 @@ import Report_Upload
 import edit_appointments
 import view_appointments_admin as adminView
 import AdminReportView
+from wp import notification
 
 """
 Admin Menu
@@ -31,7 +32,7 @@ def adminMenuScreen(root, id):
     uploadreports = HoverButton(frame, text="Upload Reports", activebackground='#00BE00', font=("Bahnschrift", 9),
                              command=lambda: Report_Upload.reportUploadScreen(root))
     viewreports = HoverButton(frame, text="View Reports", activebackground='#00BE00', font=("Bahnschrift", 9), command=lambda: AdminReportView.AdminReportScreen(root))
-    setreminder = HoverButton(frame, text="Set Reminder", activebackground='#00BE00', font=("Bahnschrift", 9))
+    # setreminder = HoverButton(frame, text="Set Reminder", activebackground='#00BE00', font=("Bahnschrift", 9))
     logout =  HoverButton(frame, text="Log Out", activebackground='#00BE00', font=("Bahnschrift", 9), command=logout)
 
     # viewapp = tk.Button (frame, text="View and Edit Appointments")
@@ -43,8 +44,8 @@ def adminMenuScreen(root, id):
     editapp.grid(row=2, column=0)
     uploadreports.grid(row=3, column=0)
     viewreports.grid(row=4, column=0)
-    setreminder.grid(row=5, column=0)
-    logout.grid(row=6, column=0)
+    # setreminder.grid(row=5, column=0)
+    logout.grid(row=5, column=0)
 
     newWind.rowconfigure(0, weight=1, minsize=200)
     newWind.columnconfigure(0, weight=1, minsize=300)
@@ -57,5 +58,8 @@ def adminMenuScreen(root, id):
     frame.rowconfigure (5, weight=1)
     frame.rowconfigure (6, weight=1)
     frame.columnconfigure(0, weight=1)
+
+
+    #notification("2021-05-29 04:30:00",0, 1) Since the program would go into lapse, it has been commented for the presentation purposes.
 
     # root.mainloop()
